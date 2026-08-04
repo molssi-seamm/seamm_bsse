@@ -439,9 +439,12 @@ that is what “alone, own basis” means): a job of <code class="docutils liter
 components that must be <strong>padded</strong> into the full-cluster-length vector at
 fragment <em>i</em>’s global atom indices, zero elsewhere.</p></li>
 </ul>
-<p>So <code class="docutils literal notranslate"><span class="pre">combine()</span></code> is exactly “padding + sum/subtract,” as hoped, for ORCA. The
-Psi4 side of this question (<code class="docutils literal notranslate"><span class="pre">Gh(...)</span></code> fragment syntax) is explicitly
-deferred, not assumed – see “Out of scope for this phase.”</p>
+<p>So <code class="docutils literal notranslate"><span class="pre">combine()</span></code> is exactly “padding + sum/subtract,” as hoped, for ORCA.
+Psi4’s side of this question turned out moot rather than merely deferred:
+Psi4’s native <code class="docutils literal notranslate"><span class="pre">bsse_type='cp'</span></code> driver does its own internal ghosting and
+combination and hands back an already-full-cluster-indexed result (confirmed
+2026-08-04, see “Psi4 sub-step” below), so the Psi4 sub-step never calls
+<code class="docutils literal notranslate"><span class="pre">seamm_bsse.combine()</span></code> at all.</p>
 </section>
 <section id="architecture">
 <h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
@@ -542,10 +545,10 @@ regression numbers (energy/gradient parity <em>and</em> wall-time) are in hand.<
 <section id="out-of-scope-for-this-phase">
 <h2>Out of scope for this phase<a class="headerlink" href="#out-of-scope-for-this-phase" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Psi4.</strong> The ghost-indexing confirmation above is ORCA-only; Psi4’s
-<code class="docutils literal notranslate"><span class="pre">Gh(...)</span></code> mechanism must be checked independently before <code class="docutils literal notranslate"><span class="pre">seamm_bsse</span></code>
-is assumed to need no Psi4-specific remapping. Deferred to the milestone
-that adds the Psi4 sub-step.</p></li>
+<li><p><strong>Psi4.</strong> Not implemented yet. Its architecture is decided (see “Psi4
+sub-step” below) and differs from ORCA’s: a thin wrapper around Psi4’s
+native <code class="docutils literal notranslate"><span class="pre">bsse_type='cp'</span></code> driver, not a second consumer of
+<code class="docutils literal notranslate"><span class="pre">generate_job_specs()</span></code>/<code class="docutils literal notranslate"><span class="pre">combine()</span></code>.</p></li>
 <li><p><strong>Open-shell / multiplicity &gt; 1 fragments.</strong> The ion pilot
 (Na<sup>+</sup>, Cl<sup>-</sup>, H<sub>2</sub>O) is closed-shell throughout;
 <code class="docutils literal notranslate"><span class="pre">Fragment.multiplicity</span></code> exists in the data model for forward-compatibility
@@ -644,9 +647,26 @@ Script: <code class="docutils literal notranslate"><span class="pre">orca_step/d
 <span class="pre">validate_bsse_m3.py</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;specified&quot;</span></code> fragments – these
 configurations are hand-built via <code class="docutils literal notranslate"><span class="pre">atoms.append</span></code> with no bond
 table, so <code class="docutils literal notranslate"><span class="pre">&quot;auto</span> <span class="pre">(molecules)&quot;</span></code>/<code class="docutils literal notranslate"><span class="pre">find_molecules()</span></code> would see
-every atom as its own fragment). <strong>Not done</strong>: geometry
-optimization / systematic angular scans (the ion-BSSE plan’s
-own next step for these pairs), and the (12)+(3) trimer.</p></td>
+every atom as its own fragment). Geometry optimization for the
+ion-water pairs <strong>done (2026-08-04)</strong>: optimizing (B3LYP-D3BJ/
+def2-TZVP, <code class="docutils literal notranslate"><span class="pre">orca_step</span></code>’s own <code class="docutils literal notranslate"><span class="pre">Optimization</span></code> sub-step) moved
+<em>both</em> CP interaction energies further from the approximate
+literature references, not closer (Na<sup>+</sup>···H<sub>2</sub>O -26.1 -&gt; -26.4 kcal/mol; Cl<sup>-</sup>···H<sub>2</sub>O -15.6 -&gt; -17.5 kcal/mol) – traced to a basis
+effect, not geometry or CP wiring: re-evaluating at
+<code class="docutils literal notranslate"><span class="pre">def2-TZVPPD</span></code> (the campaign’s actual production basis, with
+diffuse functions) instead of plain <code class="docutils literal notranslate"><span class="pre">def2-TZVP</span></code> closes
+roughly half the gap in both cases (-25.1 and -15.5
+kcal/mol respectively), confirming the same
+“diffuse functions matter for diffuse/dispersion-sensitive
+interactions” finding the campaign already made elsewhere –
+most visible for the more diffuse Cl<sup>-</sup>anion. Scripts:
+<code class="docutils literal notranslate"><span class="pre">orca_step/docs/developer_guide/campaigns/2026-08-03/</span>
+<span class="pre">optimize_ion_water.py</span></code> and <code class="docutils literal notranslate"><span class="pre">check_diffuse_basis.py</span></code>. <strong>Not
+done</strong>: a systematic angular scan for these pairs (the
+ion-BSSE plan’s own next step), re-optimizing at
+<code class="docutils literal notranslate"><span class="pre">def2-TZVPPD</span></code>/the production method rather than a
+single-point re-evaluation at the <code class="docutils literal notranslate"><span class="pre">def2-TZVP</span></code> geometry, and
+the (12)+(3) trimer.</p></td>
 </tr>
 </tbody>
 </table>
@@ -663,10 +683,88 @@ independently-validated two-body terms (&amp;minus;136 + &amp;minus;26 ≈ &amp;
 – the expected cooperative-saturation non-additivity (Na<sup>+</sup>, already
 partially satisfied by Cl<sup>-</sup>, has less capacity left to bind water),
 not a bug. Script:
-<code class="docutils literal notranslate"><span class="pre">orca_step/docs/developer_guide/campaigns/2026-07-09/validate_bsse_n3.py</span></code>.
-<strong>Not done</strong>: the Psi4 sub-step (the cross-engine check this milestone
-originally paired N = 3 with) – a separate, larger piece of work (a new
-engine’s ghost-atom writer + input generation), not started.</p>
+<code class="docutils literal notranslate"><span class="pre">orca_step/docs/developer_guide/campaigns/2026-07-09/validate_bsse_n3.py</span></code>.</p>
+</section>
+<section id="psi4-sub-step-implemented-2026-08-04">
+<h2>Psi4 sub-step: IMPLEMENTED (2026-08-04)<a class="headerlink" href="#psi4-sub-step-implemented-2026-08-04" title="Link to this heading">#</a></h2>
+<p>The cross-engine check N = 3 was originally paired with – the Psi4
+sub-step – is done as a first pass: <code class="docutils literal notranslate"><span class="pre">psi4_step</span></code>’s own <code class="docutils literal notranslate"><span class="pre">BSSE</span></code> sub-step
+(<code class="docutils literal notranslate"><span class="pre">molssi-seamm/psi4_step</span></code> PR <a class="reference external" href="https://github.com/molssi-seamm/psi4_step/pull/41">#41</a>, draft, not yet
+merged). Its architecture differs from the ORCA one in an important way.</p>
+<p><strong>Psi4 has a native N-fragment CP driver; ORCA does not.</strong> That native driver
+is the whole reason <code class="docutils literal notranslate"><span class="pre">seamm_bsse</span></code> exists for ORCA (SEAMM has to do the
+2N + 1 job-spec/<code class="docutils literal notranslate"><span class="pre">combine()</span></code> bookkeeping by hand because ORCA has nothing
+built in). Psi4 does not have that gap: <code class="docutils literal notranslate"><span class="pre">energy(...)</span></code>/<code class="docutils literal notranslate"><span class="pre">gradient(...)</span></code>
+with <code class="docutils literal notranslate"><span class="pre">bsse_type='cp'</span></code> on a <code class="docutils literal notranslate"><span class="pre">--</span></code>-separated, per-fragment-charge molecule
+block runs the full N-fragment correction internally and returns the
+already-combined, full-cluster-indexed result.</p>
+<p>Confirmed empirically (2026-08-04, real Psi4 1.10, local <code class="docutils literal notranslate"><span class="pre">seamm-psi4</span></code> conda
+env – not the <code class="docutils literal notranslate"><span class="pre">psi4.ini</span></code> Docker default, which looks misconfigured,
+pointing at a <code class="docutils literal notranslate"><span class="pre">seamm-mopac</span></code> container; unrelated, not touched):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gradient('scf',</span> <span class="pre">bsse_type='cp',</span> <span class="pre">return_wfn=True)</span></code> on the water dimer
+returned a CP-corrected energy <em>and</em> a gradient with exactly 6 rows (the
+full 6-atom cluster) in one call – no remapping needed on the SEAMM side,
+because there is no combine step on the SEAMM side.</p></li>
+<li><p>A charged two-fragment case (Na<sup>+</sup>/Cl<sup>-</sup>, per-fragment
+<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">1</span></code>/<code class="docutils literal notranslate"><span class="pre">-1</span> <span class="pre">1</span></code> charge/multiplicity headers in the molecule block) gave a
+CP interaction energy of <strong>-136.0 kcal/mol</strong> – matching the ORCA
+hand-rolled M3 result (-136 kcal/mol) closely, at a different level of
+theory. Free independent cross-validation, before any Psi4 sub-step code
+exists.</p></li>
+</ul>
+<p><strong>Decision (confirmed with the user 2026-08-04): the Psi4 sub-step is a thin
+wrapper around ``bsse_type=’cp’``, not a second consumer of
+``seamm_bsse.generate_job_specs()``/``combine()``.</strong> This is also the
+<em>better</em> validation architecture per decision 6 above: two genuinely
+independent implementations (ORCA hand-rolled vs. Psi4-native) checking each
+other, rather than the same <code class="docutils literal notranslate"><span class="pre">combine()</span></code> arithmetic run twice with a
+different QM backend underneath. <code class="docutils literal notranslate"><span class="pre">seamm_bsse</span></code>’s role for Psi4 shrinks to
+<code class="docutils literal notranslate"><span class="pre">Fragment</span></code>/<code class="docutils literal notranslate"><span class="pre">validate_fragments</span></code> (a shared fragment-definition/charge-
+validation layer, for GUI consistency with the ORCA sub-step) – the
+job-spec-generation and <code class="docutils literal notranslate"><span class="pre">combine()</span></code> pieces go unused for this engine.</p>
+<p>One real implementation wrinkle, resolved during implementation:
+<code class="docutils literal notranslate"><span class="pre">psi4_step</span></code>’s existing <code class="docutils literal notranslate"><span class="pre">Energy</span></code> sub-step builds geometry from the
+<em>global</em> current configuration (<code class="docutils literal notranslate"><span class="pre">system_db.system.configuration</span></code> in
+<code class="docutils literal notranslate"><span class="pre">Psi4._convert_structure</span></code>), not a per-node <code class="docutils literal notranslate"><span class="pre">get_system_configuration()</span></code>
+like ORCA’s sub-steps. <code class="docutils literal notranslate"><span class="pre">BSSE</span></code> builds its own fragment-aware,
+<code class="docutils literal notranslate"><span class="pre">--</span></code>-separated, per-fragment charge/multiplicity molecule block instead of
+reusing <code class="docutils literal notranslate"><span class="pre">_convert_structure</span></code>. A second wrinkle, also resolved: unlike ORCA,
+<code class="docutils literal notranslate"><span class="pre">psi4_step</span></code> sub-steps don’t drive their own execution – the main <code class="docutils literal notranslate"><span class="pre">Psi4</span></code>
+node concatenates every sub-step’s <code class="docutils literal notranslate"><span class="pre">get_input()</span></code> text into <em>one</em> shared
+script and runs it as a single process, so <code class="docutils literal notranslate"><span class="pre">BSSE.get_input()</span></code> writes its
+JSON result to an <strong>absolute path</strong> (its own sub-step directory), since the
+shared process’s cwd is the main node’s directory, not each sub-step’s own.</p>
+<p>Validated end-to-end with real Psi4 1.10 on the water dimer (the same
+geometry the ORCA M2 regression used): the whole pipeline works, and the
+HF/def2-SVP result cross-checks against the independently-validated ORCA
+HF/def2-SVP result to ~2e-4 E<sub>h</sub> – the expected, healthy level of
+agreement between two different QC codes at the same nominal level of
+theory (not the ~1e-9 machine-precision level the ORCA-vs-its-own-Compound-
+script M2 regression showed, which compares the same code against itself).
+Script: <code class="docutils literal notranslate"><span class="pre">psi4_step/docs/developer_guide/campaigns/2026-08-04/</span>
+<span class="pre">validate_psi4_bsse.py</span></code>.</p>
+<p><strong>Charged fragments and N = 3 through this sub-step itself: PASSED
+(2026-08-04)</strong>. Same geometries and level of theory (B3LYP-D3BJ/def2-TZVP)
+as the ORCA M3/N3 legs, run through <code class="docutils literal notranslate"><span class="pre">BSSE.get_input()</span></code>/<code class="docutils literal notranslate"><span class="pre">analyze()</span></code> (not
+hand-written <code class="docutils literal notranslate"><span class="pre">psi4</span></code> scripts this time):</p>
+<ul class="simple">
+<li><p>Na<sup>+</sup>···Cl<sup>-</sup> = -136.352 kcal/mol (ORCA: -136.289)</p></li>
+<li><p>Na<sup>+</sup>···H<sub>2</sub>O = -26.176 kcal/mol (ORCA: -26.110)</p></li>
+<li><p>Cl<sup>-</sup>···H<sub>2</sub>O = -15.699 kcal/mol (ORCA: -15.638)</p></li>
+<li><p>Na<sup>+</sup>···Cl<sup>-</sup>···H<sub>2</sub>O (N = 3) = -150.332
+kcal/mol (ORCA: -150.204)</p></li>
+</ul>
+<p>Agreement is ~0.05-0.13 kcal/mol throughout – the same healthy code-vs-code
+level the neutral water-dimer check showed. Script:
+<code class="docutils literal notranslate"><span class="pre">psi4_step/docs/developer_guide/campaigns/2026-08-04/</span>
+<span class="pre">validate_psi4_bsse_m3.py</span></code>. (One bug caught and fixed in the validation
+script itself, not the sub-step: an early run divided the raw Hartree value
+in <code class="docutils literal notranslate"><span class="pre">bsse.json</span></code> by 4.184 – the kJ-&gt;kcal factor – instead of converting
+Hartree-&gt;kcal directly, giving near-zero “interaction energies” even though
+<code class="docutils literal notranslate"><span class="pre">bsse.json</span></code> and Psi4’s own printed table already agreed.)</p>
+<p><strong>Still not done</strong>: energy-of-formation support; advanced SCF convergence
+controls.</p>
 </section>
 <section id="validation-plan">
 <h2>Validation plan<a class="headerlink" href="#validation-plan" title="Link to this heading">#</a></h2>
@@ -770,6 +868,7 @@ performance pass; not needed for correctness.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-compound-script-path-kept-as-the-n-2-oracle-then-retired">The Compound-script path: kept as the N = 2 oracle, then retired</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#out-of-scope-for-this-phase">Out of scope for this phase</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequence-milestones">Sequence / milestones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#psi4-sub-step-implemented-2026-08-04">Psi4 sub-step: IMPLEMENTED (2026-08-04)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-plan">Validation plan</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-to-earlier-documents">Relationship to earlier documents</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#open-questions">Open questions</a></li>
