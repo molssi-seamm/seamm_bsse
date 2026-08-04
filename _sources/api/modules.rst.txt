@@ -1,0 +1,7 @@
+seamm_bsse
+==========
+
+.. toctree::
+   :maxdepth: 4
+
+   seamm_bsse

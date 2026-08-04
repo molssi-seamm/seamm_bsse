@@ -1,0 +1,45 @@
+seamm\_bsse package
+===================
+
+Submodules
+----------
+
+seamm\_bsse.combine module
+--------------------------
+
+.. automodule:: seamm_bsse.combine
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_bsse.fragment module
+---------------------------
+
+.. automodule:: seamm_bsse.fragment
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_bsse.job\_specs module
+-----------------------------
+
+.. automodule:: seamm_bsse.job_specs
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_bsse.validate module
+---------------------------
+
+.. automodule:: seamm_bsse.validate
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: seamm_bsse
+   :members:
+   :show-inheritance:
+   :undoc-members:

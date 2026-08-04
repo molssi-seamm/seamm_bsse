@@ -1,0 +1,549 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>seamm_bsse.combine &#8212; SEAMM BSSE  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/seamm_bsse/combine';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SEAMM BSSE  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">seamm_bsse.combine</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for seamm_bsse.combine</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Combine the results of the 2N + 1 counterpoise jobs into a corrected total</span>
+<span class="sd">energy and gradient.</span>
+
+<span class="sd">Padding-only, per the architecture doc: the ``cluster`` and</span>
+<span class="sd">``fragment-in-cluster`` jobs are already full-cluster-length (ghosts keep</span>
+<span class="sd">their place in the atom list), so only the ``fragment-alone`` jobs -- genuine</span>
+<span class="sd">subsets, by construction -- need to be padded into the full-cluster-length</span>
+<span class="sd">gradient before summing.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.job_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">CLUSTER</span><span class="p">,</span> <span class="n">FRAGMENT_ALONE</span><span class="p">,</span> <span class="n">JobSpec</span>
+
+
+<div class="viewcode-block" id="JobResult">
+<a class="viewcode-back" href="../../api/seamm_bsse.html#seamm_bsse.combine.JobResult">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">JobResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;One job&#39;s outcome, as an engine step reports it.</span>
+
+<span class="sd">    ``gradient``, if given, must be in the same order as the owning</span>
+<span class="sd">    ``JobSpec.atom_indices`` (i.e. ``gradient[k]`` is the force on the atom</span>
+<span class="sd">    at ``spec.atom_indices[k]``), in E_h/bohr; ``None`` for an energy-only</span>
+<span class="sd">    run.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">gradient</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="CPResult">
+<a class="viewcode-back" href="../../api/seamm_bsse.html#seamm_bsse.combine.CPResult">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CPResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The counterpoise-corrected outcome for one cluster geometry.</span>
+
+<span class="sd">    ``energy`` is the corrected **total** energy of the cluster (same</span>
+<span class="sd">    absolute scale as the cluster job&#39;s raw energy), not an interaction</span>
+<span class="sd">    energy. ``gradient`` is full-cluster length (E_h/bohr), or ``None`` if</span>
+<span class="sd">    any job result lacked a gradient. ``bsse_correction`` is</span>
+<span class="sd">    ``energy - &lt;raw cluster energy&gt;`` (negative: BSSE always raises the</span>
+<span class="sd">    apparent binding, so the correction lowers the magnitude of binding).</span>
+<span class="sd">    ``interaction_energy``/``uncorrected_interaction_energy`` are relative to</span>
+<span class="sd">    the separated fragments (CP-corrected and not, respectively) -- the</span>
+<span class="sd">    conventional binding-energy reference point, distinct from ``energy``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">gradient</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span>
+    <span class="n">bsse_correction</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">interaction_energy</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">uncorrected_interaction_energy</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pad</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">atom_indices</span><span class="p">,</span> <span class="n">n_atoms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Place a job-local ``[len(atom_indices)][3]`` array into an</span>
+<span class="sd">    ``[n_atoms][3]`` array of zeros, at the job&#39;s global atom indices.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_indices</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">atom_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> gradient rows (one per atom in &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;this job), got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">padded</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">local_index</span><span class="p">,</span> <span class="n">global_index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atom_indices</span><span class="p">):</span>
+        <span class="n">padded</span><span class="p">[</span><span class="n">global_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">local_index</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">padded</span>
+
+
+<div class="viewcode-block" id="combine">
+<a class="viewcode-back" href="../../api/seamm_bsse.html#seamm_bsse.combine.combine">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">combine</span><span class="p">(</span>
+    <span class="n">specs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">JobSpec</span><span class="p">],</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JobResult</span><span class="p">],</span> <span class="n">n_atoms</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CPResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Assemble the counterpoise-corrected energy/gradient from the 2N + 1</span>
+<span class="sd">    job results.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    specs : Sequence[JobSpec]</span>
+<span class="sd">        The job specs from :func:`~seamm_bsse.job_specs.generate_job_specs`.</span>
+<span class="sd">    results : dict[str, JobResult]</span>
+<span class="sd">        The outcome of each job, keyed by ``JobSpec.label``. Must have an</span>
+<span class="sd">        entry for every label in ``specs``.</span>
+<span class="sd">    n_atoms : int</span>
+<span class="sd">        The number of atoms in the full cluster (the length of the returned</span>
+<span class="sd">        gradient).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">by_label</span> <span class="o">=</span> <span class="p">{</span><span class="n">spec</span><span class="o">.</span><span class="n">label</span><span class="p">:</span> <span class="n">spec</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span><span class="p">}</span>
+    <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span> <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No result given for job(s): </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">cluster_spec</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">spec</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span> <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">CLUSTER</span><span class="p">)</span>
+    <span class="n">cluster_result</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">cluster_spec</span><span class="o">.</span><span class="n">label</span><span class="p">]</span>
+    <span class="n">fragment_labels</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">fragment_label</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span> <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">FRAGMENT_ALONE</span>
+    <span class="p">]</span>
+
+    <span class="n">have_gradients</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">gradient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span><span class="p">)</span>
+
+    <span class="n">e_in_cluster_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">e_alone_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">if</span> <span class="n">have_gradients</span><span class="p">:</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">_pad</span><span class="p">(</span><span class="n">cluster_result</span><span class="o">.</span><span class="n">gradient</span><span class="p">,</span> <span class="n">cluster_spec</span><span class="o">.</span><span class="n">atom_indices</span><span class="p">,</span> <span class="n">n_atoms</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">fragment_label</span> <span class="ow">in</span> <span class="n">fragment_labels</span><span class="p">:</span>
+        <span class="n">in_cluster_spec</span> <span class="o">=</span> <span class="n">by_label</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fragment_label</span><span class="si">}</span><span class="s2">-in-cluster&quot;</span><span class="p">]</span>
+        <span class="n">alone_spec</span> <span class="o">=</span> <span class="n">by_label</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fragment_label</span><span class="si">}</span><span class="s2">-alone&quot;</span><span class="p">]</span>
+        <span class="n">in_cluster_result</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">in_cluster_spec</span><span class="o">.</span><span class="n">label</span><span class="p">]</span>
+        <span class="n">alone_result</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">alone_spec</span><span class="o">.</span><span class="n">label</span><span class="p">]</span>
+
+        <span class="n">e_in_cluster_sum</span> <span class="o">+=</span> <span class="n">in_cluster_result</span><span class="o">.</span><span class="n">energy</span>
+        <span class="n">e_alone_sum</span> <span class="o">+=</span> <span class="n">alone_result</span><span class="o">.</span><span class="n">energy</span>
+
+        <span class="k">if</span> <span class="n">have_gradients</span><span class="p">:</span>
+            <span class="n">g_in_cluster</span> <span class="o">=</span> <span class="n">_pad</span><span class="p">(</span>
+                <span class="n">in_cluster_result</span><span class="o">.</span><span class="n">gradient</span><span class="p">,</span> <span class="n">in_cluster_spec</span><span class="o">.</span><span class="n">atom_indices</span><span class="p">,</span> <span class="n">n_atoms</span>
+            <span class="p">)</span>
+            <span class="n">g_alone</span> <span class="o">=</span> <span class="n">_pad</span><span class="p">(</span><span class="n">alone_result</span><span class="o">.</span><span class="n">gradient</span><span class="p">,</span> <span class="n">alone_spec</span><span class="o">.</span><span class="n">atom_indices</span><span class="p">,</span> <span class="n">n_atoms</span><span class="p">)</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">[</span><span class="n">gc</span> <span class="o">-</span> <span class="p">(</span><span class="n">gi</span> <span class="o">-</span> <span class="n">ga</span><span class="p">)</span> <span class="k">for</span> <span class="n">gc</span><span class="p">,</span> <span class="n">gi</span><span class="p">,</span> <span class="n">ga</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row_c</span><span class="p">,</span> <span class="n">row_i</span><span class="p">,</span> <span class="n">row_a</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">row_c</span><span class="p">,</span> <span class="n">row_i</span><span class="p">,</span> <span class="n">row_a</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">g_in_cluster</span><span class="p">,</span> <span class="n">g_alone</span><span class="p">)</span>
+            <span class="p">]</span>
+
+    <span class="n">e_cluster</span> <span class="o">=</span> <span class="n">cluster_result</span><span class="o">.</span><span class="n">energy</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">e_in_cluster_sum</span> <span class="o">-</span> <span class="n">e_alone_sum</span>  <span class="c1"># sum of per-fragment BSSE gaps</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">e_cluster</span> <span class="o">-</span> <span class="n">delta</span>
+
+    <span class="k">return</span> <span class="n">CPResult</span><span class="p">(</span>
+        <span class="n">energy</span><span class="o">=</span><span class="n">energy</span><span class="p">,</span>
+        <span class="n">gradient</span><span class="o">=</span><span class="n">gradient</span><span class="p">,</span>
+        <span class="n">bsse_correction</span><span class="o">=</span><span class="n">energy</span> <span class="o">-</span> <span class="n">e_cluster</span><span class="p">,</span>
+        <span class="n">interaction_energy</span><span class="o">=</span><span class="n">e_cluster</span> <span class="o">-</span> <span class="n">e_in_cluster_sum</span><span class="p">,</span>
+        <span class="n">uncorrected_interaction_energy</span><span class="o">=</span><span class="n">e_cluster</span> <span class="o">-</span> <span class="n">e_alone_sum</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Paul Saxe. Project structure based on the Computational Molecular Science Python Cookiecutter version 1.1.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.20.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1047 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>seamm_bsse package &#8212; SEAMM BSSE  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/seamm_bsse';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer Documentation" href="../developer_guide/index.html" />
+    <link rel="prev" title="seamm_bsse" href="modules.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SEAMM BSSE  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="modules.html">seamm_bsse</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">seamm_bsse package</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API Documentation</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="modules.html" class="nav-link">seamm_bsse</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">seamm_bsse package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="seamm-bsse-package">
+<h1>seamm_bsse package<a class="headerlink" href="#seamm-bsse-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-seamm_bsse.combine">
+<span id="seamm-bsse-combine-module"></span><h2>seamm_bsse.combine module<a class="headerlink" href="#module-seamm_bsse.combine" title="Link to this heading">#</a></h2>
+<p>Combine the results of the 2N + 1 counterpoise jobs into a corrected total
+energy and gradient.</p>
+<p>Padding-only, per the architecture doc: the <code class="docutils literal notranslate"><span class="pre">cluster</span></code> and
+<code class="docutils literal notranslate"><span class="pre">fragment-in-cluster</span></code> jobs are already full-cluster-length (ghosts keep
+their place in the atom list), so only the <code class="docutils literal notranslate"><span class="pre">fragment-alone</span></code> jobs – genuine
+subsets, by construction – need to be padded into the full-cluster-length
+gradient before summing.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="seamm_bsse.combine.CPResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_bsse.combine.</span></span><span class="sig-name descname"><span class="pre">CPResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bsse_correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uncorrected_interaction_energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_bsse/combine.html#CPResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.combine.CPResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The counterpoise-corrected outcome for one cluster geometry.</p>
+<p><code class="docutils literal notranslate"><span class="pre">energy</span></code> is the corrected <strong>total</strong> energy of the cluster (same
+absolute scale as the cluster job’s raw energy), not an interaction
+energy. <code class="docutils literal notranslate"><span class="pre">gradient</span></code> is full-cluster length (E_h/bohr), or <code class="docutils literal notranslate"><span class="pre">None</span></code> if
+any job result lacked a gradient. <code class="docutils literal notranslate"><span class="pre">bsse_correction</span></code> is
+<code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">-</span> <span class="pre">&lt;raw</span> <span class="pre">cluster</span> <span class="pre">energy&gt;</span></code> (negative: BSSE always raises the
+apparent binding, so the correction lowers the magnitude of binding).
+<code class="docutils literal notranslate"><span class="pre">interaction_energy</span></code>/<code class="docutils literal notranslate"><span class="pre">uncorrected_interaction_energy</span></code> are relative to
+the separated fragments (CP-corrected and not, respectively) – the
+conventional binding-energy reference point, distinct from <code class="docutils literal notranslate"><span class="pre">energy</span></code>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.combine.CPResult.bsse_correction">
+<span class="sig-name descname"><span class="pre">bsse_correction</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.combine.CPResult.bsse_correction" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.combine.CPResult.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.combine.CPResult.energy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.combine.CPResult.gradient">
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#seamm_bsse.combine.CPResult.gradient" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.combine.CPResult.interaction_energy">
+<span class="sig-name descname"><span class="pre">interaction_energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.combine.CPResult.interaction_energy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.combine.CPResult.uncorrected_interaction_energy">
+<span class="sig-name descname"><span class="pre">uncorrected_interaction_energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.combine.CPResult.uncorrected_interaction_energy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="seamm_bsse.combine.JobResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_bsse.combine.</span></span><span class="sig-name descname"><span class="pre">JobResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_bsse/combine.html#JobResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.combine.JobResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One job’s outcome, as an engine step reports it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">gradient</span></code>, if given, must be in the same order as the owning
+<code class="docutils literal notranslate"><span class="pre">JobSpec.atom_indices</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">gradient[k]</span></code> is the force on the atom
+at <code class="docutils literal notranslate"><span class="pre">spec.atom_indices[k]</span></code>), in E_h/bohr; <code class="docutils literal notranslate"><span class="pre">None</span></code> for an energy-only
+run.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.combine.JobResult.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.combine.JobResult.energy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.combine.JobResult.gradient">
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#seamm_bsse.combine.JobResult.gradient" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seamm_bsse.combine.combine">
+<span class="sig-prename descclassname"><span class="pre">seamm_bsse.combine.</span></span><span class="sig-name descname"><span class="pre">combine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">specs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#seamm_bsse.job_specs.JobSpec" title="seamm_bsse.job_specs.JobSpec"><span class="pre">JobSpec</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#seamm_bsse.combine.JobResult" title="seamm_bsse.combine.JobResult"><span class="pre">JobResult</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#seamm_bsse.combine.CPResult" title="seamm_bsse.combine.CPResult"><span class="pre">CPResult</span></a></span></span><a class="reference internal" href="../_modules/seamm_bsse/combine.html#combine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.combine.combine" title="Link to this definition">#</a></dt>
+<dd><p>Assemble the counterpoise-corrected energy/gradient from the 2N + 1
+job results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>specs</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#seamm_bsse.job_specs.JobSpec" title="seamm_bsse.job_specs.JobSpec"><em>JobSpec</em></a><em>]</em>) – The job specs from <a class="reference internal" href="#seamm_bsse.job_specs.generate_job_specs" title="seamm_bsse.job_specs.generate_job_specs"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_job_specs()</span></code></a>.</p></li>
+<li><p><strong>results</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#seamm_bsse.combine.JobResult" title="seamm_bsse.combine.JobResult"><em>JobResult</em></a><em>]</em>) – The outcome of each job, keyed by <code class="docutils literal notranslate"><span class="pre">JobSpec.label</span></code>. Must have an
+entry for every label in <code class="docutils literal notranslate"><span class="pre">specs</span></code>.</p></li>
+<li><p><strong>n_atoms</strong> (<em>int</em>) – The number of atoms in the full cluster (the length of the returned
+gradient).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-seamm_bsse.fragment">
+<span id="seamm-bsse-fragment-module"></span><h2>seamm_bsse.fragment module<a class="headerlink" href="#module-seamm_bsse.fragment" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Fragment</span></code> input to a counterpoise correction.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="seamm_bsse.fragment.Fragment">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_bsse.fragment.</span></span><span class="sig-name descname"><span class="pre">Fragment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_bsse/fragment.html#Fragment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.fragment.Fragment" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One fragment of a cluster for an N-fragment counterpoise correction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – A short, unique identifier for the fragment (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Na+&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;water_1&quot;</span></code>). Used to name the jobs <code class="xref py py-func docutils literal notranslate"><span class="pre">generate_job_specs()</span></code>
+produces for this fragment.</p></li>
+<li><p><strong>atom_indices</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – The 0-based indices of this fragment’s atoms in the full cluster’s
+atom list.</p></li>
+<li><p><strong>charge</strong> (<em>int</em>) – The fragment’s formal charge.</p></li>
+<li><p><strong>multiplicity</strong> (<em>int</em>) – The fragment’s spin multiplicity. Only <code class="docutils literal notranslate"><span class="pre">1</span></code> (closed-shell) is
+currently supported – see the architecture doc’s “out of scope”
+section. Kept as a field now for forward compatibility.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.fragment.Fragment.atom_indices">
+<span class="sig-name descname"><span class="pre">atom_indices</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#seamm_bsse.fragment.Fragment.atom_indices" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.fragment.Fragment.charge">
+<span class="sig-name descname"><span class="pre">charge</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#seamm_bsse.fragment.Fragment.charge" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.fragment.Fragment.label">
+<span class="sig-name descname"><span class="pre">label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#seamm_bsse.fragment.Fragment.label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.fragment.Fragment.multiplicity">
+<span class="sig-name descname"><span class="pre">multiplicity</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#seamm_bsse.fragment.Fragment.multiplicity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-seamm_bsse.job_specs">
+<span id="seamm-bsse-job-specs-module"></span><h2>seamm_bsse.job_specs module<a class="headerlink" href="#module-seamm_bsse.job_specs" title="Link to this heading">#</a></h2>
+<p>Generate the 2N + 1 job specs a full-cluster-basis, N-fragment counterpoise
+correction needs, from a list of <a class="reference internal" href="#seamm_bsse.fragment.Fragment" title="seamm_bsse.fragment.Fragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fragment</span></code></a>.</p>
+<p>See the architecture doc
+(<code class="docutils literal notranslate"><span class="pre">docs/developer_guide/campaigns/2026-08-03/bsse_architecture.rst</span></code>) for the
+physics and the confirmed ORCA ghost-indexing property this shape relies on.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.CLUSTER">
+<span class="sig-prename descclassname"><span class="pre">seamm_bsse.job_specs.</span></span><span class="sig-name descname"><span class="pre">CLUSTER</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cluster'</span></span><a class="headerlink" href="#seamm_bsse.job_specs.CLUSTER" title="Link to this definition">#</a></dt>
+<dd><p>The three kinds of job a counterpoise correction runs.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.JobSpec">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_bsse.job_specs.</span></span><span class="sig-name descname"><span class="pre">JobSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ghost_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FrozenSet</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_bsse/job_specs.html#JobSpec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.job_specs.JobSpec" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One of the 2N + 1 calculations a counterpoise correction needs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – A unique identifier for this job, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;cluster&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;A-in-cluster&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;A-alone&quot;</span></code>.</p></li>
+<li><p><strong>kind</strong> (<em>str</em>) – One of <a class="reference internal" href="#seamm_bsse.job_specs.CLUSTER" title="seamm_bsse.job_specs.CLUSTER"><code class="xref py py-data docutils literal notranslate"><span class="pre">CLUSTER</span></code></a>, <code class="xref py py-data docutils literal notranslate"><span class="pre">FRAGMENT_IN_CLUSTER</span></code>,
+<code class="xref py py-data docutils literal notranslate"><span class="pre">FRAGMENT_ALONE</span></code>.</p></li>
+<li><p><strong>fragment_label</strong> (<em>str</em><em> | </em><em>None</em>) – The fragment this job’s <em>real</em> atoms belong to (the fragment being
+evaluated); <code class="docutils literal notranslate"><span class="pre">None</span></code> for the <code class="docutils literal notranslate"><span class="pre">&quot;cluster&quot;</span></code> job, which has no single
+owning fragment.</p></li>
+<li><p><strong>atom_indices</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>...</em><em>]</em>) – The global (full-cluster) atom indices present in this job, in the
+order a caller’s result (energy/gradient) must be returned in. For
+<code class="docutils literal notranslate"><span class="pre">CLUSTER</span></code> and <code class="docutils literal notranslate"><span class="pre">FRAGMENT_IN_CLUSTER</span></code> jobs this is every atom in
+the cluster, in cluster order (ghosts included) – see the
+architecture doc’s confirmed-for-ORCA indexing property. For
+<code class="docutils literal notranslate"><span class="pre">FRAGMENT_ALONE</span></code> jobs it is only that fragment’s atoms.</p></li>
+<li><p><strong>ghost_indices</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The subset of <code class="docutils literal notranslate"><span class="pre">atom_indices</span></code> that are ghost centres (basis
+functions only, no nucleus/electrons) in this job.</p></li>
+<li><p><strong>charge</strong> (<em>int</em>) – The charge to run this job at.</p></li>
+<li><p><strong>multiplicity</strong> (<em>int</em>) – The spin multiplicity to run this job at.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.JobSpec.atom_indices">
+<span class="sig-name descname"><span class="pre">atom_indices</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#seamm_bsse.job_specs.JobSpec.atom_indices" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.JobSpec.charge">
+<span class="sig-name descname"><span class="pre">charge</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#seamm_bsse.job_specs.JobSpec.charge" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.JobSpec.fragment_label">
+<span class="sig-name descname"><span class="pre">fragment_label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#seamm_bsse.job_specs.JobSpec.fragment_label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.JobSpec.ghost_indices">
+<span class="sig-name descname"><span class="pre">ghost_indices</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">FrozenSet</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#seamm_bsse.job_specs.JobSpec.ghost_indices" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.JobSpec.kind">
+<span class="sig-name descname"><span class="pre">kind</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#seamm_bsse.job_specs.JobSpec.kind" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.JobSpec.label">
+<span class="sig-name descname"><span class="pre">label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#seamm_bsse.job_specs.JobSpec.label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.JobSpec.multiplicity">
+<span class="sig-name descname"><span class="pre">multiplicity</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#seamm_bsse.job_specs.JobSpec.multiplicity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seamm_bsse.job_specs.generate_job_specs">
+<span class="sig-prename descclassname"><span class="pre">seamm_bsse.job_specs.</span></span><span class="sig-name descname"><span class="pre">generate_job_specs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#seamm_bsse.fragment.Fragment" title="seamm_bsse.fragment.Fragment"><span class="pre">Fragment</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#seamm_bsse.job_specs.JobSpec" title="seamm_bsse.job_specs.JobSpec"><span class="pre">JobSpec</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/seamm_bsse/job_specs.html#generate_job_specs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.job_specs.generate_job_specs" title="Link to this definition">#</a></dt>
+<dd><p>Return the 2N + 1 <a class="reference internal" href="#seamm_bsse.job_specs.JobSpec" title="seamm_bsse.job_specs.JobSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">JobSpec</span></code></a> for a cluster of N fragments.</p>
+<p>One <code class="docutils literal notranslate"><span class="pre">cluster</span></code> job (every atom real), N <code class="docutils literal notranslate"><span class="pre">fragment-in-cluster</span></code> jobs
+(fragment <em>i</em> real, every other fragment ghosted, full cluster atom
+list), and N <code class="docutils literal notranslate"><span class="pre">fragment-alone</span></code> jobs (only fragment <em>i</em>’s atoms, its own
+basis). At N = 2 this is exactly the classic 5-calculation
+Boys-Bernardi scheme.</p>
+</dd></dl>
+
+</section>
+<section id="module-seamm_bsse.validate">
+<span id="seamm-bsse-validate-module"></span><h2>seamm_bsse.validate module<a class="headerlink" href="#module-seamm_bsse.validate" title="Link to this heading">#</a></h2>
+<p>Sanity checks on a fragment list, shared by <code class="xref py py-func docutils literal notranslate"><span class="pre">generate_job_specs()</span></code> and
+callers that want to cross-check fragments against a known cluster
+charge/multiplicity (e.g. an engine step checking its fragment table against
+the actual system’s <code class="docutils literal notranslate"><span class="pre">configuration.charge</span></code>).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="seamm_bsse.validate.validate_fragments">
+<span class="sig-prename descclassname"><span class="pre">seamm_bsse.validate.</span></span><span class="sig-name descname"><span class="pre">validate_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#seamm_bsse.fragment.Fragment" title="seamm_bsse.fragment.Fragment"><span class="pre">Fragment</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_multiplicity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/seamm_bsse/validate.html#validate_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.validate.validate_fragments" title="Link to this definition">#</a></dt>
+<dd><p>Raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if <code class="docutils literal notranslate"><span class="pre">fragments</span></code> is not a valid partition, or (when
+given) is inconsistent with <code class="docutils literal notranslate"><span class="pre">cluster_charge</span></code>/<code class="docutils literal notranslate"><span class="pre">cluster_multiplicity</span></code>.</p>
+<p>Checks:</p>
+<ul class="simple">
+<li><p>at least one fragment;</p></li>
+<li><p>no atom index is claimed by more than one fragment;</p></li>
+<li><p>every fragment is closed-shell (<code class="docutils literal notranslate"><span class="pre">multiplicity</span> <span class="pre">==</span> <span class="pre">1</span></code>) – open-shell
+fragments are not yet supported (see the architecture doc);</p></li>
+<li><p>if given, <code class="docutils literal notranslate"><span class="pre">cluster_charge</span></code> equals the sum of the fragment charges;</p></li>
+<li><p>if given, <code class="docutils literal notranslate"><span class="pre">cluster_multiplicity</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code> (the only multiplicity a set
+of closed-shell fragments can combine to, in this phase).</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="module-seamm_bsse">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-seamm_bsse" title="Link to this heading">#</a></h2>
+<p>Engine-agnostic N-fragment counterpoise (BSSE) job-spec generation and
+result combination for SEAMM.</p>
+<p>Given a cluster’s fragment assignment and per-fragment charge/multiplicity,
+generates the 2N + 1 job specs the full-cluster-basis counterpoise correction
+needs, and combines the 2N + 1 results into a corrected total energy and
+gradient. No quantum chemistry, no engine-specific input/output handling –
+that stays in each engine’s own SEAMM step (<code class="docutils literal notranslate"><span class="pre">orca_step</span></code> first). See
+<code class="docutils literal notranslate"><span class="pre">docs/developer_guide/campaigns/2026-08-03/bsse_architecture.rst</span></code> for the
+full design.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="seamm_bsse.CPResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_bsse.</span></span><span class="sig-name descname"><span class="pre">CPResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bsse_correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interaction_energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uncorrected_interaction_energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_bsse/combine.html#CPResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.CPResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The counterpoise-corrected outcome for one cluster geometry.</p>
+<p><code class="docutils literal notranslate"><span class="pre">energy</span></code> is the corrected <strong>total</strong> energy of the cluster (same
+absolute scale as the cluster job’s raw energy), not an interaction
+energy. <code class="docutils literal notranslate"><span class="pre">gradient</span></code> is full-cluster length (E_h/bohr), or <code class="docutils literal notranslate"><span class="pre">None</span></code> if
+any job result lacked a gradient. <code class="docutils literal notranslate"><span class="pre">bsse_correction</span></code> is
+<code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">-</span> <span class="pre">&lt;raw</span> <span class="pre">cluster</span> <span class="pre">energy&gt;</span></code> (negative: BSSE always raises the
+apparent binding, so the correction lowers the magnitude of binding).
+<code class="docutils literal notranslate"><span class="pre">interaction_energy</span></code>/<code class="docutils literal notranslate"><span class="pre">uncorrected_interaction_energy</span></code> are relative to
+the separated fragments (CP-corrected and not, respectively) – the
+conventional binding-energy reference point, distinct from <code class="docutils literal notranslate"><span class="pre">energy</span></code>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.CPResult.bsse_correction">
+<span class="sig-name descname"><span class="pre">bsse_correction</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.CPResult.bsse_correction" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.CPResult.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.CPResult.energy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.CPResult.gradient">
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#seamm_bsse.CPResult.gradient" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.CPResult.interaction_energy">
+<span class="sig-name descname"><span class="pre">interaction_energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.CPResult.interaction_energy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.CPResult.uncorrected_interaction_energy">
+<span class="sig-name descname"><span class="pre">uncorrected_interaction_energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.CPResult.uncorrected_interaction_energy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="seamm_bsse.Fragment">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_bsse.</span></span><span class="sig-name descname"><span class="pre">Fragment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_bsse/fragment.html#Fragment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.Fragment" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One fragment of a cluster for an N-fragment counterpoise correction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – A short, unique identifier for the fragment (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Na+&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;water_1&quot;</span></code>). Used to name the jobs <a class="reference internal" href="#seamm_bsse.generate_job_specs" title="seamm_bsse.generate_job_specs"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_job_specs()</span></code></a>
+produces for this fragment.</p></li>
+<li><p><strong>atom_indices</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – The 0-based indices of this fragment’s atoms in the full cluster’s
+atom list.</p></li>
+<li><p><strong>charge</strong> (<em>int</em>) – The fragment’s formal charge.</p></li>
+<li><p><strong>multiplicity</strong> (<em>int</em>) – The fragment’s spin multiplicity. Only <code class="docutils literal notranslate"><span class="pre">1</span></code> (closed-shell) is
+currently supported – see the architecture doc’s “out of scope”
+section. Kept as a field now for forward compatibility.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.Fragment.atom_indices">
+<span class="sig-name descname"><span class="pre">atom_indices</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#seamm_bsse.Fragment.atom_indices" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.Fragment.charge">
+<span class="sig-name descname"><span class="pre">charge</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#seamm_bsse.Fragment.charge" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.Fragment.label">
+<span class="sig-name descname"><span class="pre">label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#seamm_bsse.Fragment.label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.Fragment.multiplicity">
+<span class="sig-name descname"><span class="pre">multiplicity</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#seamm_bsse.Fragment.multiplicity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="seamm_bsse.JobResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_bsse.</span></span><span class="sig-name descname"><span class="pre">JobResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_bsse/combine.html#JobResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.JobResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One job’s outcome, as an engine step reports it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">gradient</span></code>, if given, must be in the same order as the owning
+<code class="docutils literal notranslate"><span class="pre">JobSpec.atom_indices</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">gradient[k]</span></code> is the force on the atom
+at <code class="docutils literal notranslate"><span class="pre">spec.atom_indices[k]</span></code>), in E_h/bohr; <code class="docutils literal notranslate"><span class="pre">None</span></code> for an energy-only
+run.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.JobResult.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#seamm_bsse.JobResult.energy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.JobResult.gradient">
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#seamm_bsse.JobResult.gradient" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="seamm_bsse.JobSpec">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_bsse.</span></span><span class="sig-name descname"><span class="pre">JobSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ghost_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FrozenSet</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_bsse/job_specs.html#JobSpec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.JobSpec" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One of the 2N + 1 calculations a counterpoise correction needs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – A unique identifier for this job, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;cluster&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;A-in-cluster&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;A-alone&quot;</span></code>.</p></li>
+<li><p><strong>kind</strong> (<em>str</em>) – One of <code class="xref py py-data docutils literal notranslate"><span class="pre">CLUSTER</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">FRAGMENT_IN_CLUSTER</span></code>,
+<code class="xref py py-data docutils literal notranslate"><span class="pre">FRAGMENT_ALONE</span></code>.</p></li>
+<li><p><strong>fragment_label</strong> (<em>str</em><em> | </em><em>None</em>) – The fragment this job’s <em>real</em> atoms belong to (the fragment being
+evaluated); <code class="docutils literal notranslate"><span class="pre">None</span></code> for the <code class="docutils literal notranslate"><span class="pre">&quot;cluster&quot;</span></code> job, which has no single
+owning fragment.</p></li>
+<li><p><strong>atom_indices</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>...</em><em>]</em>) – The global (full-cluster) atom indices present in this job, in the
+order a caller’s result (energy/gradient) must be returned in. For
+<code class="docutils literal notranslate"><span class="pre">CLUSTER</span></code> and <code class="docutils literal notranslate"><span class="pre">FRAGMENT_IN_CLUSTER</span></code> jobs this is every atom in
+the cluster, in cluster order (ghosts included) – see the
+architecture doc’s confirmed-for-ORCA indexing property. For
+<code class="docutils literal notranslate"><span class="pre">FRAGMENT_ALONE</span></code> jobs it is only that fragment’s atoms.</p></li>
+<li><p><strong>ghost_indices</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The subset of <code class="docutils literal notranslate"><span class="pre">atom_indices</span></code> that are ghost centres (basis
+functions only, no nucleus/electrons) in this job.</p></li>
+<li><p><strong>charge</strong> (<em>int</em>) – The charge to run this job at.</p></li>
+<li><p><strong>multiplicity</strong> (<em>int</em>) – The spin multiplicity to run this job at.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.JobSpec.atom_indices">
+<span class="sig-name descname"><span class="pre">atom_indices</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#seamm_bsse.JobSpec.atom_indices" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.JobSpec.charge">
+<span class="sig-name descname"><span class="pre">charge</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#seamm_bsse.JobSpec.charge" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.JobSpec.fragment_label">
+<span class="sig-name descname"><span class="pre">fragment_label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#seamm_bsse.JobSpec.fragment_label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.JobSpec.ghost_indices">
+<span class="sig-name descname"><span class="pre">ghost_indices</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">FrozenSet</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#seamm_bsse.JobSpec.ghost_indices" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.JobSpec.kind">
+<span class="sig-name descname"><span class="pre">kind</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#seamm_bsse.JobSpec.kind" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.JobSpec.label">
+<span class="sig-name descname"><span class="pre">label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#seamm_bsse.JobSpec.label" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_bsse.JobSpec.multiplicity">
+<span class="sig-name descname"><span class="pre">multiplicity</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#seamm_bsse.JobSpec.multiplicity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seamm_bsse.combine">
+<span class="sig-prename descclassname"><span class="pre">seamm_bsse.</span></span><span class="sig-name descname"><span class="pre">combine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">specs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#seamm_bsse.job_specs.JobSpec" title="seamm_bsse.job_specs.JobSpec"><span class="pre">JobSpec</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#seamm_bsse.combine.JobResult" title="seamm_bsse.combine.JobResult"><span class="pre">JobResult</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#seamm_bsse.combine.CPResult" title="seamm_bsse.combine.CPResult"><span class="pre">CPResult</span></a></span></span><a class="reference internal" href="../_modules/seamm_bsse/combine.html#combine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.combine" title="Link to this definition">#</a></dt>
+<dd><p>Assemble the counterpoise-corrected energy/gradient from the 2N + 1
+job results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>specs</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#seamm_bsse.JobSpec" title="seamm_bsse.JobSpec"><em>JobSpec</em></a><em>]</em>) – The job specs from <a class="reference internal" href="#seamm_bsse.job_specs.generate_job_specs" title="seamm_bsse.job_specs.generate_job_specs"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_job_specs()</span></code></a>.</p></li>
+<li><p><strong>results</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#seamm_bsse.JobResult" title="seamm_bsse.JobResult"><em>JobResult</em></a><em>]</em>) – The outcome of each job, keyed by <code class="docutils literal notranslate"><span class="pre">JobSpec.label</span></code>. Must have an
+entry for every label in <code class="docutils literal notranslate"><span class="pre">specs</span></code>.</p></li>
+<li><p><strong>n_atoms</strong> (<em>int</em>) – The number of atoms in the full cluster (the length of the returned
+gradient).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seamm_bsse.generate_job_specs">
+<span class="sig-prename descclassname"><span class="pre">seamm_bsse.</span></span><span class="sig-name descname"><span class="pre">generate_job_specs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#seamm_bsse.fragment.Fragment" title="seamm_bsse.fragment.Fragment"><span class="pre">Fragment</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#seamm_bsse.job_specs.JobSpec" title="seamm_bsse.job_specs.JobSpec"><span class="pre">JobSpec</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/seamm_bsse/job_specs.html#generate_job_specs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.generate_job_specs" title="Link to this definition">#</a></dt>
+<dd><p>Return the 2N + 1 <a class="reference internal" href="#seamm_bsse.JobSpec" title="seamm_bsse.JobSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">JobSpec</span></code></a> for a cluster of N fragments.</p>
+<p>One <code class="docutils literal notranslate"><span class="pre">cluster</span></code> job (every atom real), N <code class="docutils literal notranslate"><span class="pre">fragment-in-cluster</span></code> jobs
+(fragment <em>i</em> real, every other fragment ghosted, full cluster atom
+list), and N <code class="docutils literal notranslate"><span class="pre">fragment-alone</span></code> jobs (only fragment <em>i</em>’s atoms, its own
+basis). At N = 2 this is exactly the classic 5-calculation
+Boys-Bernardi scheme.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seamm_bsse.validate_fragments">
+<span class="sig-prename descclassname"><span class="pre">seamm_bsse.</span></span><span class="sig-name descname"><span class="pre">validate_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#seamm_bsse.fragment.Fragment" title="seamm_bsse.fragment.Fragment"><span class="pre">Fragment</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_multiplicity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/seamm_bsse/validate.html#validate_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_bsse.validate_fragments" title="Link to this definition">#</a></dt>
+<dd><p>Raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if <code class="docutils literal notranslate"><span class="pre">fragments</span></code> is not a valid partition, or (when
+given) is inconsistent with <code class="docutils literal notranslate"><span class="pre">cluster_charge</span></code>/<code class="docutils literal notranslate"><span class="pre">cluster_multiplicity</span></code>.</p>
+<p>Checks:</p>
+<ul class="simple">
+<li><p>at least one fragment;</p></li>
+<li><p>no atom index is claimed by more than one fragment;</p></li>
+<li><p>every fragment is closed-shell (<code class="docutils literal notranslate"><span class="pre">multiplicity</span> <span class="pre">==</span> <span class="pre">1</span></code>) – open-shell
+fragments are not yet supported (see the architecture doc);</p></li>
+<li><p>if given, <code class="docutils literal notranslate"><span class="pre">cluster_charge</span></code> equals the sum of the fragment charges;</p></li>
+<li><p>if given, <code class="docutils literal notranslate"><span class="pre">cluster_multiplicity</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code> (the only multiplicity a set
+of closed-shell fragments can combine to, in this phase).</p></li>
+</ul>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="modules.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">seamm_bsse</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../developer_guide/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Developer Documentation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-seamm_bsse.combine">seamm_bsse.combine module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.CPResult"><code class="docutils literal notranslate"><span class="pre">CPResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.CPResult.bsse_correction"><code class="docutils literal notranslate"><span class="pre">CPResult.bsse_correction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.CPResult.energy"><code class="docutils literal notranslate"><span class="pre">CPResult.energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.CPResult.gradient"><code class="docutils literal notranslate"><span class="pre">CPResult.gradient</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.CPResult.interaction_energy"><code class="docutils literal notranslate"><span class="pre">CPResult.interaction_energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.CPResult.uncorrected_interaction_energy"><code class="docutils literal notranslate"><span class="pre">CPResult.uncorrected_interaction_energy</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.JobResult"><code class="docutils literal notranslate"><span class="pre">JobResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.JobResult.energy"><code class="docutils literal notranslate"><span class="pre">JobResult.energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.JobResult.gradient"><code class="docutils literal notranslate"><span class="pre">JobResult.gradient</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine.combine"><code class="docutils literal notranslate"><span class="pre">combine()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-seamm_bsse.fragment">seamm_bsse.fragment module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.fragment.Fragment"><code class="docutils literal notranslate"><span class="pre">Fragment</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.fragment.Fragment.atom_indices"><code class="docutils literal notranslate"><span class="pre">Fragment.atom_indices</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.fragment.Fragment.charge"><code class="docutils literal notranslate"><span class="pre">Fragment.charge</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.fragment.Fragment.label"><code class="docutils literal notranslate"><span class="pre">Fragment.label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.fragment.Fragment.multiplicity"><code class="docutils literal notranslate"><span class="pre">Fragment.multiplicity</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-seamm_bsse.job_specs">seamm_bsse.job_specs module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.CLUSTER"><code class="docutils literal notranslate"><span class="pre">CLUSTER</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.JobSpec"><code class="docutils literal notranslate"><span class="pre">JobSpec</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.JobSpec.atom_indices"><code class="docutils literal notranslate"><span class="pre">JobSpec.atom_indices</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.JobSpec.charge"><code class="docutils literal notranslate"><span class="pre">JobSpec.charge</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.JobSpec.fragment_label"><code class="docutils literal notranslate"><span class="pre">JobSpec.fragment_label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.JobSpec.ghost_indices"><code class="docutils literal notranslate"><span class="pre">JobSpec.ghost_indices</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.JobSpec.kind"><code class="docutils literal notranslate"><span class="pre">JobSpec.kind</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.JobSpec.label"><code class="docutils literal notranslate"><span class="pre">JobSpec.label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.JobSpec.multiplicity"><code class="docutils literal notranslate"><span class="pre">JobSpec.multiplicity</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.job_specs.generate_job_specs"><code class="docutils literal notranslate"><span class="pre">generate_job_specs()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-seamm_bsse.validate">seamm_bsse.validate module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.validate.validate_fragments"><code class="docutils literal notranslate"><span class="pre">validate_fragments()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-seamm_bsse">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.CPResult"><code class="docutils literal notranslate"><span class="pre">CPResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.CPResult.bsse_correction"><code class="docutils literal notranslate"><span class="pre">CPResult.bsse_correction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.CPResult.energy"><code class="docutils literal notranslate"><span class="pre">CPResult.energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.CPResult.gradient"><code class="docutils literal notranslate"><span class="pre">CPResult.gradient</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.CPResult.interaction_energy"><code class="docutils literal notranslate"><span class="pre">CPResult.interaction_energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.CPResult.uncorrected_interaction_energy"><code class="docutils literal notranslate"><span class="pre">CPResult.uncorrected_interaction_energy</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.Fragment"><code class="docutils literal notranslate"><span class="pre">Fragment</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.Fragment.atom_indices"><code class="docutils literal notranslate"><span class="pre">Fragment.atom_indices</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.Fragment.charge"><code class="docutils literal notranslate"><span class="pre">Fragment.charge</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.Fragment.label"><code class="docutils literal notranslate"><span class="pre">Fragment.label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.Fragment.multiplicity"><code class="docutils literal notranslate"><span class="pre">Fragment.multiplicity</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobResult"><code class="docutils literal notranslate"><span class="pre">JobResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobResult.energy"><code class="docutils literal notranslate"><span class="pre">JobResult.energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobResult.gradient"><code class="docutils literal notranslate"><span class="pre">JobResult.gradient</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobSpec"><code class="docutils literal notranslate"><span class="pre">JobSpec</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobSpec.atom_indices"><code class="docutils literal notranslate"><span class="pre">JobSpec.atom_indices</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobSpec.charge"><code class="docutils literal notranslate"><span class="pre">JobSpec.charge</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobSpec.fragment_label"><code class="docutils literal notranslate"><span class="pre">JobSpec.fragment_label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobSpec.ghost_indices"><code class="docutils literal notranslate"><span class="pre">JobSpec.ghost_indices</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobSpec.kind"><code class="docutils literal notranslate"><span class="pre">JobSpec.kind</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobSpec.label"><code class="docutils literal notranslate"><span class="pre">JobSpec.label</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.JobSpec.multiplicity"><code class="docutils literal notranslate"><span class="pre">JobSpec.multiplicity</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.combine"><code class="docutils literal notranslate"><span class="pre">combine()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.generate_job_specs"><code class="docutils literal notranslate"><span class="pre">generate_job_specs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_bsse.validate_fragments"><code class="docutils literal notranslate"><span class="pre">validate_fragments()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/api/seamm_bsse.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Paul Saxe. Project structure based on the Computational Molecular Science Python Cookiecutter version 1.1.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.20.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
