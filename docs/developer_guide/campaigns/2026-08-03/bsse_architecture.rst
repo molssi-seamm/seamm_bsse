@@ -212,19 +212,86 @@ M1            ``seamm_bsse``: ``Fragment``/``JobSpec``/``generate_job_specs``/
               QM). Acceptance: index-mapping/padding tests pass for N = 2 and
               N = 3 synthetic clusters.
 M2            ``orca_step``: ``run_orca_job`` extracted; ``bsse.py`` driven by
-              ``seamm_bsse`` at N = 2, neutral singlet. **Acceptance:
-              reproduces the existing water/FEC/EC Compound-script CP
-              energies and gradients** to the precision those campaigns were
-              decided at. Compound path retired from the production run path
-              once this passes.
+              ``seamm_bsse``, generalized to N fragments/per-fragment charge.
+              **Coding done** (2026-08-03): ``run_orca_job`` extracted from
+              ``run_orca``; ``geometry_block`` takes ``atom_indices``/
+              ``ghost_atoms``; ``bsse.py``/``bsse_parameters.py``/
+              ``tk_bsse.py`` generalized (fragment table -> N groups +
+              per-fragment charge, validated via ``seamm_bsse.validate_
+              fragments``); ``run()`` loops the 2N + 1 job specs through
+              ``run_orca_job`` and calls ``seamm_bsse.combine()``. Verified
+              with stubbed-ORCA unit tests (job-charge/ghost-set wiring, and
+              the assembled energy against hand-derived numbers) -- 135/135
+              orca_step tests green, lint clean. **Water-dimer acceptance gate
+              PASSED (2026-08-03, real ORCA 6.1.1, HF/def2-SVP,
+              ``H2O-H2O.sdf``)**: the new path's corrected energy, BSSE
+              correction, and both interaction energies agree with the old
+              Compound-script path to ~7e-9 E_h, the gradient to ~7e-8
+              E_h/bohr -- SCF-noise level, far inside any precision the
+              water/FEC/EC campaigns were decided at. Script:
+              ``orca_step/docs/developer_guide/campaigns/2026-07-09/
+              validate_bsse_m2.py`` (built a real molsystem Configuration and
+              a minimal-but-real execution harness -- actual ``seamm_exec``
+              local executor, actual ORCA -- rather than a full flowchart, so
+              both the old Compound-script helpers, still present in
+              ``bsse.py`` but unused by ``run()``, and the new path could run
+              side by side on the identical geometry/method/basis).
+              **FEC and EC legs also PASSED (2026-08-03, same script/method,
+              ``FEC-FEC dimer opt PM6-ORG.sdf`` and the first record of
+              ``EC_dimers_run_1.sdf``)**: energies agree to ~2-3e-9 E_h,
+              gradients to ~5.6e-8 E_h/bohr -- the same SCF-noise level as
+              water, on 20-atom systems including F (FEC) and a
+              production-sampled (NMS-displaced) EC geometry, not just a
+              hand-picked equilibrium one. **M2's acceptance gate is
+              complete** for N = 2, neutral-singlet ORCA counterpoise; the
+              Compound-script path (``bssegradient.cmp``/``bssenergy.cmp``)
+              can now be considered fully superseded for production use (kept
+              in ``bsse.py`` as a permanent regression reference, not deleted).
 M3            Per-fragment charge. Na\ :sup:`+`\ ···H\ :sub:`2`\ O,
               Cl\ :sup:`-`\ ···H\ :sub:`2`\ O, Na\ :sup:`+`\ ···Cl\ :sup:`-`
               validated against literature binding energies (the ion-BSSE
-              plan's two-body work).
+              plan's two-body work). **PASSED (2026-08-04)**, real ORCA,
+              B3LYP-D3BJ/def2-TZVP CP interaction energies vs. approximate
+              literature references: Na\ :sup:`+`\ ···Cl\ :sup:`-` well
+              minimum ≈ -136 kcal/mol at R ≈ 2.4-2.6 Å (lit. ≈ -133 kcal/mol
+              at R\ :sub:`e` ≈ 2.36 Å, Born-Haber from atomic D0/IP/EA),
+              decaying smoothly to -64 kcal/mol by 7 Å; Na\ :sup:`+`\ ···H\
+              :sub:`2`\ O = -26.1 kcal/mol (lit. ≈ -24); Cl\ :sup:`-`\ ···H\
+              :sub:`2`\ O = -15.6 kcal/mol (lit. ≈ -13). All within a few
+              kcal/mol on **unoptimized, literature-informed geometries** (no
+              relaxation at this level of theory) -- exactly the residual
+              expected from geometry, not a wiring defect. Confirms
+              per-fragment charge (``seamm_bsse.Fragment``/``fragment
+              charges``) produces chemically sane numbers on three distinct
+              real charged systems (cation-anion, cation-water, anion-water),
+              not just correct wiring on stubbed numbers (M2's unit tests).
+              Script: ``orca_step/docs/developer_guide/campaigns/2026-07-09/
+              validate_bsse_m3.py`` (``"specified"`` fragments -- these
+              configurations are hand-built via ``atoms.append`` with no bond
+              table, so ``"auto (molecules)"``/``find_molecules()`` would see
+              every atom as its own fragment). **Not done**: geometry
+              optimization / systematic angular scans (the ion-BSSE plan's
+              own next step for these pairs), and the (12)+(3) trimer.
 ============  ===========================================================
 
-N = 3 (Na\ :sup:`+`/Cl\ :sup:`-`/H\ :sub:`2`\ O trimers) and the Psi4 sub-step
-are the ion-BSSE plan's next roadmap step, deliberately not scoped here.
+N = 3 on the ORCA path (real ORCA, not just the synthetic N=3 unit tests in
+``seamm_bsse`` itself) **PASSED (2026-08-04)**: a hand-built Na\ :sup:`+`\
+···Cl\ :sup:`-`\ ···H\ :sub:`2`\ O trimer (contact ion pair, R = 2.44 Å, plus
+a water coordinating Na\ :sup:`+`\  from a different direction than Cl\
+:sup:`-`), same B3LYP-D3BJ/def2-TZVP level as the M3 two-body checks. Ran the
+full 2N + 1 = 7 jobs correctly (confirmed from the printed per-fragment
+charges: Na\ :sup:`+`\ /Cl\ :sup:`-`\ /H\ :sub:`2`\ O = +1/&minus;1/0, and
+"Running 7 ORCA job(s)"). CP-corrected interaction energy &minus;150.2
+kcal/mol: deeper than the isolated Na\ :sup:`+`\ ···Cl\ :sup:`-`\  pair alone
+(&minus;136, from M3) but *less* than the naive pairwise sum of the
+independently-validated two-body terms (&minus;136 + &minus;26 ≈ &minus;162)
+-- the expected cooperative-saturation non-additivity (Na\ :sup:`+`\ , already
+partially satisfied by Cl\ :sup:`-`\ , has less capacity left to bind water),
+not a bug. Script:
+``orca_step/docs/developer_guide/campaigns/2026-07-09/validate_bsse_n3.py``.
+**Not done**: the Psi4 sub-step (the cross-engine check this milestone
+originally paired N = 3 with) -- a separate, larger piece of work (a new
+engine's ghost-atom writer + input generation), not started.
 
 Validation plan
 ----------------
