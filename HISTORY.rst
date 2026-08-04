@@ -2,6 +2,16 @@
 History
 =======
 
+2026.8.4.1 -- Internal: refresh the published README; no code changes
+    * The README published with 2026.8.4 still described the package as
+      design-only and not yet implemented -- left over from before
+      ``Fragment``/``JobSpec``/``generate_job_specs``/``combine`` were even
+      written. Updated to describe what is actually implemented and
+      validated, including the ``orca_step`` and ``psi4_step`` BSSE
+      sub-steps that consume this library. ``Fragment``/``JobSpec``/
+      ``generate_job_specs``/``combine``/``validate_fragments`` are
+      unchanged.
+
 2026.8.4 -- Initial release: N-fragment counterpoise job-spec generation and combination
     * Added ``Fragment``, ``generate_job_specs``, and ``combine``: given a cluster's
       fragment assignment and per-fragment charge, generates the 2N + 1 job specs a
