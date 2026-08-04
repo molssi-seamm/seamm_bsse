@@ -70,9 +70,12 @@ renumbered. Consequently:
   components that must be **padded** into the full-cluster-length vector at
   fragment *i*'s global atom indices, zero elsewhere.
 
-So ``combine()`` is exactly "padding + sum/subtract," as hoped, for ORCA. The
-Psi4 side of this question (``Gh(...)`` fragment syntax) is explicitly
-deferred, not assumed -- see "Out of scope for this phase."
+So ``combine()`` is exactly "padding + sum/subtract," as hoped, for ORCA.
+Psi4's side of this question turned out moot rather than merely deferred:
+Psi4's native ``bsse_type='cp'`` driver does its own internal ghosting and
+combination and hands back an already-full-cluster-indexed result (confirmed
+2026-08-04, see "Psi4 sub-step" below), so the Psi4 sub-step never calls
+``seamm_bsse.combine()`` at all.
 
 Architecture
 ------------
@@ -175,10 +178,10 @@ regression numbers (energy/gradient parity *and* wall-time) are in hand.
 Out of scope for this phase
 ----------------------------
 
-* **Psi4.** The ghost-indexing confirmation above is ORCA-only; Psi4's
-  ``Gh(...)`` mechanism must be checked independently before ``seamm_bsse``
-  is assumed to need no Psi4-specific remapping. Deferred to the milestone
-  that adds the Psi4 sub-step.
+* **Psi4.** Not implemented yet. Its architecture is decided (see "Psi4
+  sub-step" below) and differs from ORCA's: a thin wrapper around Psi4's
+  native ``bsse_type='cp'`` driver, not a second consumer of
+  ``generate_job_specs()``/``combine()``.
 * **Open-shell / multiplicity > 1 fragments.** The ion pilot
   (Na\ :sup:`+`, Cl\ :sup:`-`, H\ :sub:`2`\ O) is closed-shell throughout;
   ``Fragment.multiplicity`` exists in the data model for forward-compatibility
@@ -289,9 +292,78 @@ independently-validated two-body terms (&minus;136 + &minus;26 ≈ &minus;162)
 partially satisfied by Cl\ :sup:`-`\ , has less capacity left to bind water),
 not a bug. Script:
 ``orca_step/docs/developer_guide/campaigns/2026-07-09/validate_bsse_n3.py``.
-**Not done**: the Psi4 sub-step (the cross-engine check this milestone
-originally paired N = 3 with) -- a separate, larger piece of work (a new
-engine's ghost-atom writer + input generation), not started.
+
+Psi4 sub-step: IMPLEMENTED (2026-08-04)
+------------------------------------------
+
+The cross-engine check N = 3 was originally paired with -- the Psi4
+sub-step -- is done as a first pass: ``psi4_step``'s own ``BSSE`` sub-step
+(``molssi-seamm/psi4_step`` PR `#41
+<https://github.com/molssi-seamm/psi4_step/pull/41>`_, draft, not yet
+merged). Its architecture differs from the ORCA one in an important way.
+
+**Psi4 has a native N-fragment CP driver; ORCA does not.** That native driver
+is the whole reason ``seamm_bsse`` exists for ORCA (SEAMM has to do the
+2N + 1 job-spec/``combine()`` bookkeeping by hand because ORCA has nothing
+built in). Psi4 does not have that gap: ``energy(...)``/``gradient(...)``
+with ``bsse_type='cp'`` on a ``--``-separated, per-fragment-charge molecule
+block runs the full N-fragment correction internally and returns the
+already-combined, full-cluster-indexed result.
+
+Confirmed empirically (2026-08-04, real Psi4 1.10, local ``seamm-psi4`` conda
+env -- not the ``psi4.ini`` Docker default, which looks misconfigured,
+pointing at a ``seamm-mopac`` container; unrelated, not touched):
+
+* ``gradient('scf', bsse_type='cp', return_wfn=True)`` on the water dimer
+  returned a CP-corrected energy *and* a gradient with exactly 6 rows (the
+  full 6-atom cluster) in one call -- no remapping needed on the SEAMM side,
+  because there is no combine step on the SEAMM side.
+* A charged two-fragment case (Na\ :sup:`+`\ /Cl\ :sup:`-`\ , per-fragment
+  ``1 1``/``-1 1`` charge/multiplicity headers in the molecule block) gave a
+  CP interaction energy of **-136.0 kcal/mol** -- matching the ORCA
+  hand-rolled M3 result (-136 kcal/mol) closely, at a different level of
+  theory. Free independent cross-validation, before any Psi4 sub-step code
+  exists.
+
+**Decision (confirmed with the user 2026-08-04): the Psi4 sub-step is a thin
+wrapper around ``bsse_type='cp'``, not a second consumer of
+``seamm_bsse.generate_job_specs()``/``combine()``.** This is also the
+*better* validation architecture per decision 6 above: two genuinely
+independent implementations (ORCA hand-rolled vs. Psi4-native) checking each
+other, rather than the same ``combine()`` arithmetic run twice with a
+different QM backend underneath. ``seamm_bsse``'s role for Psi4 shrinks to
+``Fragment``/``validate_fragments`` (a shared fragment-definition/charge-
+validation layer, for GUI consistency with the ORCA sub-step) -- the
+job-spec-generation and ``combine()`` pieces go unused for this engine.
+
+One real implementation wrinkle, resolved during implementation:
+``psi4_step``'s existing ``Energy`` sub-step builds geometry from the
+*global* current configuration (``system_db.system.configuration`` in
+``Psi4._convert_structure``), not a per-node ``get_system_configuration()``
+like ORCA's sub-steps. ``BSSE`` builds its own fragment-aware,
+``--``-separated, per-fragment charge/multiplicity molecule block instead of
+reusing ``_convert_structure``. A second wrinkle, also resolved: unlike ORCA,
+``psi4_step`` sub-steps don't drive their own execution -- the main ``Psi4``
+node concatenates every sub-step's ``get_input()`` text into *one* shared
+script and runs it as a single process, so ``BSSE.get_input()`` writes its
+JSON result to an **absolute path** (its own sub-step directory), since the
+shared process's cwd is the main node's directory, not each sub-step's own.
+
+Validated end-to-end with real Psi4 1.10 on the water dimer (the same
+geometry the ORCA M2 regression used): the whole pipeline works, and the
+HF/def2-SVP result cross-checks against the independently-validated ORCA
+HF/def2-SVP result to ~2e-4 E\ :sub:`h` -- the expected, healthy level of
+agreement between two different QC codes at the same nominal level of
+theory (not the ~1e-9 machine-precision level the ORCA-vs-its-own-Compound-
+script M2 regression showed, which compares the same code against itself).
+Script: ``psi4_step/docs/developer_guide/campaigns/2026-08-04/
+validate_psi4_bsse.py``.
+
+**Not yet done**: charged fragments and N = 3 validated through this
+sub-step specifically (the native Psi4 driver was separately confirmed on
+charged fragments directly via hand-written ``psi4`` scripts, not yet
+through ``BSSE.get_input()``/``analyze()``); energy-of-formation support;
+advanced SCF convergence controls.
 
 Validation plan
 ----------------
