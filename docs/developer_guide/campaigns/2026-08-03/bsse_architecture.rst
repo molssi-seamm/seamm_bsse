@@ -272,9 +272,28 @@ M3            Per-fragment charge. Na\ :sup:`+`\ ···H\ :sub:`2`\ O,
               validate_bsse_m3.py`` (``"specified"`` fragments -- these
               configurations are hand-built via ``atoms.append`` with no bond
               table, so ``"auto (molecules)"``/``find_molecules()`` would see
-              every atom as its own fragment). **Not done**: geometry
-              optimization / systematic angular scans (the ion-BSSE plan's
-              own next step for these pairs), and the (12)+(3) trimer.
+              every atom as its own fragment). Geometry optimization for the
+              ion-water pairs **done (2026-08-04)**: optimizing (B3LYP-D3BJ/
+              def2-TZVP, ``orca_step``'s own ``Optimization`` sub-step) moved
+              *both* CP interaction energies further from the approximate
+              literature references, not closer (Na\ :sup:`+`\ ···H\
+              :sub:`2`\ O -26.1 -> -26.4 kcal/mol; Cl\ :sup:`-`\ ···H\
+              :sub:`2`\ O -15.6 -> -17.5 kcal/mol) -- traced to a basis
+              effect, not geometry or CP wiring: re-evaluating at
+              ``def2-TZVPPD`` (the campaign's actual production basis, with
+              diffuse functions) instead of plain ``def2-TZVP`` closes
+              roughly half the gap in both cases (-25.1 and -15.5
+              kcal/mol respectively), confirming the same
+              "diffuse functions matter for diffuse/dispersion-sensitive
+              interactions" finding the campaign already made elsewhere --
+              most visible for the more diffuse Cl\ :sup:`-`\ anion. Scripts:
+              ``orca_step/docs/developer_guide/campaigns/2026-08-03/
+              optimize_ion_water.py`` and ``check_diffuse_basis.py``. **Not
+              done**: a systematic angular scan for these pairs (the
+              ion-BSSE plan's own next step), re-optimizing at
+              ``def2-TZVPPD``/the production method rather than a
+              single-point re-evaluation at the ``def2-TZVP`` geometry, and
+              the (12)+(3) trimer.
 ============  ===========================================================
 
 N = 3 on the ORCA path (real ORCA, not just the synthetic N=3 unit tests in
