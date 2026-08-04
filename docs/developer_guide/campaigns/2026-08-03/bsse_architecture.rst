@@ -359,11 +359,28 @@ script M2 regression showed, which compares the same code against itself).
 Script: ``psi4_step/docs/developer_guide/campaigns/2026-08-04/
 validate_psi4_bsse.py``.
 
-**Not yet done**: charged fragments and N = 3 validated through this
-sub-step specifically (the native Psi4 driver was separately confirmed on
-charged fragments directly via hand-written ``psi4`` scripts, not yet
-through ``BSSE.get_input()``/``analyze()``); energy-of-formation support;
-advanced SCF convergence controls.
+**Charged fragments and N = 3 through this sub-step itself: PASSED
+(2026-08-04)**. Same geometries and level of theory (B3LYP-D3BJ/def2-TZVP)
+as the ORCA M3/N3 legs, run through ``BSSE.get_input()``/``analyze()`` (not
+hand-written ``psi4`` scripts this time):
+
+* Na\ :sup:`+`\ ···Cl\ :sup:`-` = -136.352 kcal/mol (ORCA: -136.289)
+* Na\ :sup:`+`\ ···H\ :sub:`2`\ O = -26.176 kcal/mol (ORCA: -26.110)
+* Cl\ :sup:`-`\ ···H\ :sub:`2`\ O = -15.699 kcal/mol (ORCA: -15.638)
+* Na\ :sup:`+`\ ···Cl\ :sup:`-`\ ···H\ :sub:`2`\ O (N = 3) = -150.332
+  kcal/mol (ORCA: -150.204)
+
+Agreement is ~0.05-0.13 kcal/mol throughout -- the same healthy code-vs-code
+level the neutral water-dimer check showed. Script:
+``psi4_step/docs/developer_guide/campaigns/2026-08-04/
+validate_psi4_bsse_m3.py``. (One bug caught and fixed in the validation
+script itself, not the sub-step: an early run divided the raw Hartree value
+in ``bsse.json`` by 4.184 -- the kJ->kcal factor -- instead of converting
+Hartree->kcal directly, giving near-zero "interaction energies" even though
+``bsse.json`` and Psi4's own printed table already agreed.)
+
+**Still not done**: energy-of-formation support; advanced SCF convergence
+controls.
 
 Validation plan
 ----------------
