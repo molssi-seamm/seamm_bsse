@@ -13,6 +13,20 @@ from typing import Dict, List, Optional, Sequence
 
 from .job_specs import CLUSTER, FRAGMENT_ALONE, JobSpec
 
+#: Net-force tolerance (E_h/bohr, ~1 eV/A) above which a CP-corrected
+#: gradient is treated as corrupted -- a translational-invariance guard.
+#: A converged CP-corrected gradient of an isolated cluster always sums to
+#: ~0 net force; ORCA (RIJCOSX) can silently corrupt the far-ghost Pulay
+#: force at large fragment separation while the energy stays fine (no
+#: warning, no linear dependence flagged), and this sum is the only
+#: reliable detector. Same value as the guard formerly implemented in
+#: orca_step's ``bssegradient.cmp`` Compound script -- see the workspace
+#: memory ``bsse-corrected-gradients.md`` for the root-cause investigation
+#: it was written against. Where this fires the physical BSSE correction to
+#: the forces is negligible anyway (it only triggers at large separation),
+#: so falling back to the uncorrected cluster gradient is safe.
+DEFAULT_GRADIENT_TOLERANCE = 0.02
+
 
 @dataclass(frozen=True)
 class JobResult:
@@ -41,6 +55,11 @@ class CPResult:
     ``interaction_energy``/``uncorrected_interaction_energy`` are relative to
     the separated fragments (CP-corrected and not, respectively) -- the
     conventional binding-energy reference point, distinct from ``energy``.
+    ``gradient_fallback`` is ``True`` when the translational-invariance guard
+    fired and ``gradient`` was replaced by the uncorrected cluster gradient
+    (``energy`` is unaffected either way). ``net_force`` is the magnitude
+    (E_h/bohr) of the net force summed over the combined gradient before any
+    fallback -- ``None`` when there is no gradient.
     """
 
     energy: float
@@ -48,6 +67,8 @@ class CPResult:
     bsse_correction: float
     interaction_energy: float
     uncorrected_interaction_energy: float
+    gradient_fallback: bool = False
+    net_force: Optional[float] = None
 
 
 def _pad(values, atom_indices, n_atoms):
@@ -65,7 +86,10 @@ def _pad(values, atom_indices, n_atoms):
 
 
 def combine(
-    specs: Sequence[JobSpec], results: Dict[str, JobResult], n_atoms: int
+    specs: Sequence[JobSpec],
+    results: Dict[str, JobResult],
+    n_atoms: int,
+    gradient_tolerance: float = DEFAULT_GRADIENT_TOLERANCE,
 ) -> CPResult:
     """Assemble the counterpoise-corrected energy/gradient from the 2N + 1
     job results.
@@ -80,6 +104,9 @@ def combine(
     n_atoms : int
         The number of atoms in the full cluster (the length of the returned
         gradient).
+    gradient_tolerance : float
+        Net-force tolerance (E_h/bohr) for the translational-invariance
+        guard -- see :data:`DEFAULT_GRADIENT_TOLERANCE`.
     """
     by_label = {spec.label: spec for spec in specs}
     missing = [spec.label for spec in specs if spec.label not in results]
@@ -96,8 +123,12 @@ def combine(
 
     e_in_cluster_sum = 0.0
     e_alone_sum = 0.0
+    cluster_gradient = None
     if have_gradients:
-        gradient = _pad(cluster_result.gradient, cluster_spec.atom_indices, n_atoms)
+        cluster_gradient = _pad(
+            cluster_result.gradient, cluster_spec.atom_indices, n_atoms
+        )
+        gradient = cluster_gradient
     else:
         gradient = None
 
@@ -124,10 +155,31 @@ def combine(
     delta = e_in_cluster_sum - e_alone_sum  # sum of per-fragment BSSE gaps
     energy = e_cluster - delta
 
+    # Translational-invariance guard: a correct CP-corrected gradient of an
+    # isolated cluster always sums to ~0 net force (the correction only
+    # redistributes force between fragments' ghost/real centres, it adds
+    # none). An engine's per-job gradient can come back silently corrupted
+    # (ORCA's RIJCOSX on far diffuse ghosts is the confirmed case -- see
+    # DEFAULT_GRADIENT_TOLERANCE's docstring), and this net force is the
+    # only detector. When it fires, fall back to the uncorrected cluster
+    # gradient for the forces -- safe because the physical BSSE force
+    # correction is negligible wherever the guard trips (large separation).
+    # The energy is unaffected either way.
+    gradient_fallback = False
+    net_force = None
+    if gradient is not None:
+        net = [sum(row[c] for row in gradient) for c in range(3)]
+        net_force = sum(c * c for c in net) ** 0.5
+        if net_force > gradient_tolerance:
+            gradient_fallback = True
+            gradient = cluster_gradient
+
     return CPResult(
         energy=energy,
         gradient=gradient,
         bsse_correction=energy - e_cluster,
         interaction_energy=e_cluster - e_in_cluster_sum,
         uncorrected_interaction_energy=e_cluster - e_alone_sum,
+        gradient_fallback=gradient_fallback,
+        net_force=net_force,
     )
