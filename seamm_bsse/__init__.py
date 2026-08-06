@@ -18,7 +18,12 @@ from .job_specs import (  # noqa: F401
     JobSpec,
     generate_job_specs,
 )
-from .combine import CPResult, JobResult, combine  # noqa: F401
+from .combine import (  # noqa: F401
+    DEFAULT_GRADIENT_TOLERANCE,
+    CPResult,
+    JobResult,
+    combine,
+)
 from .validate import validate_fragments  # noqa: F401
 from ._version import __version__  # noqa: F401
 
@@ -32,6 +37,7 @@ __all__ = [
     "JobResult",
     "CPResult",
     "combine",
+    "DEFAULT_GRADIENT_TOLERANCE",
     "validate_fragments",
     "__version__",
 ]
