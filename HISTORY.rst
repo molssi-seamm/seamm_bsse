@@ -2,6 +2,17 @@
 History
 =======
 
+2026.8.6 -- Bugfix: guard against a corrupted counterpoise gradient at large separation
+    * ``combine()`` now checks that the assembled counterpoise-corrected gradient
+      sums to ~zero net force, as it must by translational invariance. Some
+      quantum chemistry codes (confirmed for ORCA, at large fragment separation)
+      can silently return a corrupted ghost-centre force while the energy stays
+      fine. When the net force exceeds a tolerance (``gradient_tolerance``,
+      default 0.02 E_h/bohr), ``combine()`` falls back to the uncorrected cluster
+      gradient for the forces -- the physical BSSE correction is negligible
+      wherever this triggers -- and reports it via two new ``CPResult`` fields,
+      ``gradient_fallback`` and ``net_force``. The corrected energy is unaffected.
+
 2026.8.4.1 -- Internal: refresh the published README; no code changes
     * The README published with 2026.8.4 still described the package as
       design-only and not yet implemented -- left over from before
