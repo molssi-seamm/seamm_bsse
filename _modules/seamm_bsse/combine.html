@@ -346,6 +346,20 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.job_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">CLUSTER</span><span class="p">,</span> <span class="n">FRAGMENT_ALONE</span><span class="p">,</span> <span class="n">JobSpec</span>
 
+<span class="c1">#: Net-force tolerance (E_h/bohr, ~1 eV/A) above which a CP-corrected</span>
+<span class="c1">#: gradient is treated as corrupted -- a translational-invariance guard.</span>
+<span class="c1">#: A converged CP-corrected gradient of an isolated cluster always sums to</span>
+<span class="c1">#: ~0 net force; ORCA (RIJCOSX) can silently corrupt the far-ghost Pulay</span>
+<span class="c1">#: force at large fragment separation while the energy stays fine (no</span>
+<span class="c1">#: warning, no linear dependence flagged), and this sum is the only</span>
+<span class="c1">#: reliable detector. Same value as the guard formerly implemented in</span>
+<span class="c1">#: orca_step&#39;s ``bssegradient.cmp`` Compound script -- see the workspace</span>
+<span class="c1">#: memory ``bsse-corrected-gradients.md`` for the root-cause investigation</span>
+<span class="c1">#: it was written against. Where this fires the physical BSSE correction to</span>
+<span class="c1">#: the forces is negligible anyway (it only triggers at large separation),</span>
+<span class="c1">#: so falling back to the uncorrected cluster gradient is safe.</span>
+<span class="n">DEFAULT_GRADIENT_TOLERANCE</span> <span class="o">=</span> <span class="mf">0.02</span>
+
 
 <div class="viewcode-block" id="JobResult">
 <a class="viewcode-back" href="../../api/seamm_bsse.html#seamm_bsse.combine.JobResult">[docs]</a>
@@ -379,13 +393,20 @@
 <span class="sd">    ``interaction_energy``/``uncorrected_interaction_energy`` are relative to</span>
 <span class="sd">    the separated fragments (CP-corrected and not, respectively) -- the</span>
 <span class="sd">    conventional binding-energy reference point, distinct from ``energy``.</span>
+<span class="sd">    ``gradient_fallback`` is ``True`` when the translational-invariance guard</span>
+<span class="sd">    fired and ``gradient`` was replaced by the uncorrected cluster gradient</span>
+<span class="sd">    (``energy`` is unaffected either way). ``net_force`` is the magnitude</span>
+<span class="sd">    (E_h/bohr) of the net force summed over the combined gradient before any</span>
+<span class="sd">    fallback -- ``None`` when there is no gradient.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">gradient</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span>
     <span class="n">bsse_correction</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">interaction_energy</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">uncorrected_interaction_energy</span><span class="p">:</span> <span class="nb">float</span></div>
+    <span class="n">uncorrected_interaction_energy</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">gradient_fallback</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">net_force</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 
@@ -406,7 +427,10 @@
 <div class="viewcode-block" id="combine">
 <a class="viewcode-back" href="../../api/seamm_bsse.html#seamm_bsse.combine.combine">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">combine</span><span class="p">(</span>
-    <span class="n">specs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">JobSpec</span><span class="p">],</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JobResult</span><span class="p">],</span> <span class="n">n_atoms</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">specs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">JobSpec</span><span class="p">],</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JobResult</span><span class="p">],</span>
+    <span class="n">n_atoms</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">gradient_tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_GRADIENT_TOLERANCE</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CPResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Assemble the counterpoise-corrected energy/gradient from the 2N + 1</span>
 <span class="sd">    job results.</span>
@@ -421,6 +445,9 @@
 <span class="sd">    n_atoms : int</span>
 <span class="sd">        The number of atoms in the full cluster (the length of the returned</span>
 <span class="sd">        gradient).</span>
+<span class="sd">    gradient_tolerance : float</span>
+<span class="sd">        Net-force tolerance (E_h/bohr) for the translational-invariance</span>
+<span class="sd">        guard -- see :data:`DEFAULT_GRADIENT_TOLERANCE`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">by_label</span> <span class="o">=</span> <span class="p">{</span><span class="n">spec</span><span class="o">.</span><span class="n">label</span><span class="p">:</span> <span class="n">spec</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span><span class="p">}</span>
     <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span> <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
@@ -437,8 +464,12 @@
 
     <span class="n">e_in_cluster_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">e_alone_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">cluster_gradient</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">have_gradients</span><span class="p">:</span>
-        <span class="n">gradient</span> <span class="o">=</span> <span class="n">_pad</span><span class="p">(</span><span class="n">cluster_result</span><span class="o">.</span><span class="n">gradient</span><span class="p">,</span> <span class="n">cluster_spec</span><span class="o">.</span><span class="n">atom_indices</span><span class="p">,</span> <span class="n">n_atoms</span><span class="p">)</span>
+        <span class="n">cluster_gradient</span> <span class="o">=</span> <span class="n">_pad</span><span class="p">(</span>
+            <span class="n">cluster_result</span><span class="o">.</span><span class="n">gradient</span><span class="p">,</span> <span class="n">cluster_spec</span><span class="o">.</span><span class="n">atom_indices</span><span class="p">,</span> <span class="n">n_atoms</span>
+        <span class="p">)</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">cluster_gradient</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">gradient</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -465,12 +496,33 @@
     <span class="n">delta</span> <span class="o">=</span> <span class="n">e_in_cluster_sum</span> <span class="o">-</span> <span class="n">e_alone_sum</span>  <span class="c1"># sum of per-fragment BSSE gaps</span>
     <span class="n">energy</span> <span class="o">=</span> <span class="n">e_cluster</span> <span class="o">-</span> <span class="n">delta</span>
 
+    <span class="c1"># Translational-invariance guard: a correct CP-corrected gradient of an</span>
+    <span class="c1"># isolated cluster always sums to ~0 net force (the correction only</span>
+    <span class="c1"># redistributes force between fragments&#39; ghost/real centres, it adds</span>
+    <span class="c1"># none). An engine&#39;s per-job gradient can come back silently corrupted</span>
+    <span class="c1"># (ORCA&#39;s RIJCOSX on far diffuse ghosts is the confirmed case -- see</span>
+    <span class="c1"># DEFAULT_GRADIENT_TOLERANCE&#39;s docstring), and this net force is the</span>
+    <span class="c1"># only detector. When it fires, fall back to the uncorrected cluster</span>
+    <span class="c1"># gradient for the forces -- safe because the physical BSSE force</span>
+    <span class="c1"># correction is negligible wherever the guard trips (large separation).</span>
+    <span class="c1"># The energy is unaffected either way.</span>
+    <span class="n">gradient_fallback</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">net_force</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">gradient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">gradient</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+        <span class="n">net_force</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">net</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="k">if</span> <span class="n">net_force</span> <span class="o">&gt;</span> <span class="n">gradient_tolerance</span><span class="p">:</span>
+            <span class="n">gradient_fallback</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="n">cluster_gradient</span>
+
     <span class="k">return</span> <span class="n">CPResult</span><span class="p">(</span>
         <span class="n">energy</span><span class="o">=</span><span class="n">energy</span><span class="p">,</span>
         <span class="n">gradient</span><span class="o">=</span><span class="n">gradient</span><span class="p">,</span>
         <span class="n">bsse_correction</span><span class="o">=</span><span class="n">energy</span> <span class="o">-</span> <span class="n">e_cluster</span><span class="p">,</span>
         <span class="n">interaction_energy</span><span class="o">=</span><span class="n">e_cluster</span> <span class="o">-</span> <span class="n">e_in_cluster_sum</span><span class="p">,</span>
         <span class="n">uncorrected_interaction_energy</span><span class="o">=</span><span class="n">e_cluster</span> <span class="o">-</span> <span class="n">e_alone_sum</span><span class="p">,</span>
+        <span class="n">gradient_fallback</span><span class="o">=</span><span class="n">gradient_fallback</span><span class="p">,</span>
+        <span class="n">net_force</span><span class="o">=</span><span class="n">net_force</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 </pre></div>
