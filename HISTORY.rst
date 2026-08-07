@@ -25,6 +25,12 @@ History
       negligible correction" assumption -- a small value alongside
       ``gradient_fallback`` means the fallback is safe; a large one means the
       point is worth excluding/rerunning instead.
+    * Documentation: ``getting_started`` now documents, for engine
+      integrations, the recommended fragment-charge default convention (sum
+      of each fragment's atoms' formal charge, when the structure provides
+      one) and how to use ``gradient_fallback``/``net_force``/
+      ``gradient_correction_magnitude`` together to judge whether a
+      triggered gradient fallback is safe for a given point.
 
 2026.8.7 -- Bugfix: catch a per-fragment charge that leaves it open-shell
     * ``validate_fragments`` now takes an optional ``atomic_numbers`` argument and,
