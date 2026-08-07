@@ -347,6 +347,7 @@
     <span class="n">fragments</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Fragment</span><span class="p">],</span>
     <span class="n">cluster_charge</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">cluster_multiplicity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">atomic_numbers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise ``ValueError`` if ``fragments`` is not a valid partition, or (when</span>
 <span class="sd">    given) is inconsistent with ``cluster_charge``/``cluster_multiplicity``.</span>
@@ -359,7 +360,17 @@
 <span class="sd">      fragments are not yet supported (see the architecture doc);</span>
 <span class="sd">    * if given, ``cluster_charge`` equals the sum of the fragment charges;</span>
 <span class="sd">    * if given, ``cluster_multiplicity`` is ``1`` (the only multiplicity a set</span>
-<span class="sd">      of closed-shell fragments can combine to, in this phase).</span>
+<span class="sd">      of closed-shell fragments can combine to, in this phase);</span>
+<span class="sd">    * if ``atomic_numbers`` is given (the full cluster&#39;s, indexed the same way</span>
+<span class="sd">      as ``Fragment.atom_indices``), every fragment has an even electron count</span>
+<span class="sd">      at its assigned charge -- a fragment charge that leaves it with an odd</span>
+<span class="sd">      number of electrons cannot be closed-shell, whatever the *cluster&#39;s*</span>
+<span class="sd">      total charge sums to. This is the case a per-fragment charge typo (e.g.</span>
+<span class="sd">      swapping which fragment an ion&#39;s charge is assigned to) produces: the</span>
+<span class="sd">      cluster-charge check above still passes, but the fragment-alone/</span>
+<span class="sd">      fragment-in-cluster sub-job for that fragment cannot converge as a</span>
+<span class="sd">      singlet and the underlying QM code errors out deep in that sub-job</span>
+<span class="sd">      instead of at flowchart validation time.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At least one fragment is required.&quot;</span><span class="p">)</span>
@@ -394,7 +405,24 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Cluster multiplicity </span><span class="si">{</span><span class="n">cluster_multiplicity</span><span class="si">}</span><span class="s2"> is not supported; &quot;</span>
             <span class="s2">&quot;only closed-shell clusters (multiplicity 1) are, in this phase.&quot;</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">atomic_numbers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
+            <span class="n">n_electrons</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">atomic_numbers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fragment</span><span class="o">.</span><span class="n">atom_indices</span><span class="p">)</span> <span class="o">-</span> <span class="n">fragment</span><span class="o">.</span><span class="n">charge</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_electrons</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Fragment </span><span class="si">{</span><span class="n">fragment</span><span class="o">.</span><span class="n">label</span><span class="si">!r}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">atom_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;atom(s)) has charge </span><span class="si">{</span><span class="n">fragment</span><span class="o">.</span><span class="n">charge</span><span class="si">:</span><span class="s2">+d</span><span class="si">}</span><span class="s2">, giving it &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_electrons</span><span class="si">}</span><span class="s2"> electrons; a closed-shell (singlet) &quot;</span>
+                    <span class="s2">&quot;fragment needs an even number. Check that &#39;fragment &quot;</span>
+                    <span class="s2">&quot;charges&#39; assigns each charge to the fragment it actually &quot;</span>
+                    <span class="s2">&quot;belongs to -- the fragments are numbered in the order &quot;</span>
+                    <span class="s2">&quot;they are found (atom order for &#39;specified&#39;, or the order &quot;</span>
+                    <span class="s2">&quot;molecules are detected for &#39;auto&#39;).&quot;</span>
+                <span class="p">)</span></div>
 
 </pre></div>
 
