@@ -57,3 +57,36 @@ def test_cluster_multiplicity_gt_one_raises():
     fragments = [Fragment(label="A", atom_indices=[0])]
     with pytest.raises(ValueError, match="multiplicity"):
         validate_fragments(fragments, cluster_multiplicity=3)
+
+
+def test_odd_electron_fragment_raises():
+    # O, H, H (water, 10 electrons neutral) + Na (11 electrons neutral), with
+    # the +1 charge mistakenly assigned to the water fragment instead of Na:
+    # the cluster charge (+1) still checks out, but water-at-+1 is a 9
+    # electron fragment, which cannot be closed-shell.
+    atomic_numbers = [8, 1, 1, 11]
+    fragments = [
+        Fragment(label="1", atom_indices=[0, 1, 2], charge=1),
+        Fragment(label="2", atom_indices=[3], charge=0),
+    ]
+    with pytest.raises(ValueError, match="9 electrons"):
+        validate_fragments(fragments, cluster_charge=1, atomic_numbers=atomic_numbers)
+
+
+def test_even_electron_fragments_pass():
+    # Same cluster, charge assigned to the right fragment (Na+).
+    atomic_numbers = [8, 1, 1, 11]
+    fragments = [
+        Fragment(label="1", atom_indices=[0, 1, 2], charge=0),
+        Fragment(label="2", atom_indices=[3], charge=1),
+    ]
+    validate_fragments(
+        fragments, cluster_charge=1, atomic_numbers=atomic_numbers
+    )  # no exception
+
+
+def test_no_atomic_numbers_skips_electron_check():
+    # Without atomic_numbers, the odd-electron check is not run (existing
+    # callers that don't pass it keep their prior behavior).
+    fragments = [Fragment(label="A", atom_indices=[0], charge=1)]
+    validate_fragments(fragments)  # no exception
