@@ -391,6 +391,74 @@ for the full rationale.</p>
 </pre></div>
 </div>
 </section>
+<section id="choosing-per-fragment-charges">
+<h2>Choosing per-fragment charges<a class="headerlink" href="#choosing-per-fragment-charges" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Fragment.charge</span></code> is per-fragment, not automatic – but the convention
+followed by every engine step built on this library (<code class="docutils literal notranslate"><span class="pre">orca_step</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">psi4_step</span></code>’s independently-implemented equivalent) is:</p>
+<ul class="simple">
+<li><p>If the caller has an explicit charge for each fragment, use it.</p></li>
+<li><p>Otherwise, if the source structure carries a <strong>per-atom formal charge</strong>
+(e.g. read from an SDF/MOL file’s <code class="docutils literal notranslate"><span class="pre">M</span>&#160; <span class="pre">CHG</span></code> records), default each
+fragment’s charge to the <strong>sum of its own atoms’ formal charge</strong>. This
+covers monatomic ions (Na+, Cl-) and polyatomic ions (NH4+, BF4-) alike,
+without the caller needing to specify anything, and is the single most
+effective way to avoid the fragment-ordering mistake described below.</p></li>
+<li><p>Otherwise, default to all-neutral.</p></li>
+</ul>
+<p>Adopting this same convention in a new engine integration is strongly
+recommended over inventing a different default (for example a
+periodic-table/element-based heuristic) – it generalizes to any ion,
+monatomic or not, using information the structure itself already carries,
+rather than guessing chemistry.</p>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">validate_fragments()</span></code> (called by <code class="xref py py-func docutils literal notranslate"><span class="pre">generate_job_specs()</span></code>, and
+directly by a caller before that if useful) checks two things regardless of
+where the charges came from:</p>
+<ul class="simple">
+<li><p>the fragment charges sum to the known cluster charge, if given;</p></li>
+<li><p>(when <code class="docutils literal notranslate"><span class="pre">atomic_numbers</span></code> is given) each fragment has an <strong>even</strong> number of
+electrons at its assigned charge – every fragment must be closed-shell.</p></li>
+</ul>
+<p>The second check exists specifically because the first, alone, misses a
+charge assigned to the <em>wrong</em> fragment when the swap happens to preserve
+the cluster’s overall charge – as it always does between two same-parity
+fragments, e.g. two monatomic ions. Without it, that mistake only surfaces
+as an opaque SCF failure deep inside one engine sub-job. Always pass
+<code class="docutils literal notranslate"><span class="pre">atomic_numbers</span></code> when you have them.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The fragment <em>order</em> – which is fragment 1, which is fragment 2, … –
+is whatever order the caller’s <code class="docutils literal notranslate"><span class="pre">fragments</span></code> list is in (<code class="docutils literal notranslate"><span class="pre">auto</span></code>
+molecule-detection order, or a caller’s own atom-group order). It is easy
+to get backwards when supplying explicit charges by hand; a caller-facing
+step should log each fragment’s composition and assigned charge before
+running anything, so a user can catch a mismatch before it burns compute.</p>
+</div>
+</section>
+<section id="diagnosing-a-corrupted-gradient">
+<h2>Diagnosing a corrupted gradient<a class="headerlink" href="#diagnosing-a-corrupted-gradient" title="Link to this heading">#</a></h2>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">combine()</span></code> guards the assembled gradient with a translational-
+invariance check (a correct counterpoise-corrected gradient of an isolated
+cluster always sums to ~0 net force) and falls back to the uncorrected
+cluster gradient when that is violated – see <code class="docutils literal notranslate"><span class="pre">CPResult.gradient_fallback</span></code>
+and <code class="docutils literal notranslate"><span class="pre">CPResult.net_force</span></code>.</p>
+<p>Whether that fallback is actually <em>safe</em> for a given point depends on how
+much physics it discards, which is a separate question from how noisy the
+input gradients were. <code class="docutils literal notranslate"><span class="pre">CPResult.gradient_correction_magnitude</span></code> – the size
+of the BSSE gradient correction that was applied (or would have been,
+absent any fallback) – answers that directly:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">net_force</span></code> and <code class="docutils literal notranslate"><span class="pre">gradient_correction_magnitude</span></code> close in size means
+the “correction” was mostly noise to begin with – the fallback loses
+little, and is safe.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gradient_correction_magnitude</span></code> much larger than <code class="docutils literal notranslate"><span class="pre">net_force</span></code> means
+real physics is being discarded – the point is worth flagging for
+exclusion or rerun, not silently accepted.</p></li>
+</ul>
+<p>A caller-facing step should report both numbers, not just whether the
+fallback fired, so a user can make this judgment – see <code class="docutils literal notranslate"><span class="pre">orca_step</span></code>’s BSSE
+sub-step user guide for a worked example of the resulting warning message.</p>
+</section>
 </section>
 
 
@@ -442,6 +510,8 @@ for the full rationale.</p>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing">Installing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-per-fragment-charges">Choosing per-fragment charges</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnosing-a-corrupted-gradient">Diagnosing a corrupted gradient</a></li>
 </ul>
   </nav></div>
 

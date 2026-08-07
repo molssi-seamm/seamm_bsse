@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>2026-08-03 – N-fragment counterpoise architecture &#8212; SEAMM BSSE  documentation</title>
+    <title>Summary &#8212; SEAMM BSSE  documentation</title>
   
   
   
@@ -41,12 +41,12 @@
     <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_guide/campaigns/2026-08-03/index';</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_guide/campaigns/2026-08-03/NOTES_nacl_cluster_scf_curve_crossing';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="An N-fragment, charge-aware counterpoise architecture" href="bsse_architecture.html" />
-    <link rel="prev" title="Campaigns" href="../index.html" />
+    <link rel="prev" title="An N-fragment, charge-aware counterpoise architecture" href="bsse_architecture.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -295,9 +295,9 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Campaigns</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">2026-08-03 – N-fragment counterpoise architecture</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">2026-08-03 – N-fragment counterpoise architecture</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="bsse_architecture.html">An N-fragment, charge-aware counterpoise architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="NOTES_nacl_cluster_scf_curve_crossing.html">Summary</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Summary</a></li>
 
 
 
@@ -352,7 +352,10 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Campaigns</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">2026-08-03 – N-fragment counterpoise architecture</span></li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">2026-08-03 – N-fragment counterpoise architecture</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Summary</span></li>
   </ul>
 </nav>
 </div>
@@ -369,39 +372,182 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="n-fragment-counterpoise-architecture">
-<h1>2026-08-03 – N-fragment counterpoise architecture<a class="headerlink" href="#n-fragment-counterpoise-architecture" title="Link to this heading">#</a></h1>
-<section id="goal">
-<h2>Goal<a class="headerlink" href="#goal" title="Link to this heading">#</a></h2>
-<p>Generalize the ORCA counterpoise (BSSE) correction from two fragments/
-neutral-singlet-only to N fragments with independent per-fragment charge,
-via a small engine-agnostic library (this package) plus a thin, generalized
-substep inside <code class="docutils literal notranslate"><span class="pre">orca_step</span></code>.</p>
-<p>Contents:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="bsse_architecture.html">An N-fragment, charge-aware counterpoise architecture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#goal">Goal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#the-physics">The physics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#confirmed-design-detail-orca-preserves-full-cluster-indexing">Confirmed design detail: ORCA preserves full-cluster indexing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#architecture">Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#the-compound-script-path-kept-as-the-n-2-oracle-then-retired">The Compound-script path: kept as the N = 2 oracle, then retired</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#out-of-scope-for-this-phase">Out of scope for this phase</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#sequence-milestones">Sequence / milestones</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#psi4-sub-step-implemented-2026-08-04">Psi4 sub-step: IMPLEMENTED (2026-08-04)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#validation-plan">Validation plan</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#relationship-to-earlier-documents">Relationship to earlier documents</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bsse_architecture.html#open-questions">Open questions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="NOTES_nacl_cluster_scf_curve_crossing.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NOTES_nacl_cluster_scf_curve_crossing.html#evidence">Evidence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NOTES_nacl_cluster_scf_curve_crossing.html#why-this-matters-beyond-na-cl">Why this matters beyond Na/Cl</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NOTES_nacl_cluster_scf_curve_crossing.html#fix-directions-not-yet-implemented">Fix directions (not yet implemented)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NOTES_nacl_cluster_scf_curve_crossing.html#raw-data">Raw data</a></li>
-</ul>
-</div>
+  <p>Bug: the “cluster” sub-calculation lands on the wrong SCF solution near the
+Na<sup>+</sup>/Cl<sup>-</sup> ionic/covalent curve crossing
+============================================================================</p>
+<dl class="field-list simple">
+<dt class="field-odd">Status<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Root cause identified, not yet fixed</p>
+</dd>
+<dt class="field-even">Found in<span class="colon">:</span></dt>
+<dd class="field-even"><p>Job 3867 on the <code class="docutils literal notranslate"><span class="pre">dev</span></code> dashboard – Na<sup>+</sup>…Cl<sup>-</sup>
+40-point log-spaced R-scan (1.30-20.00 A), REVDSD-PBEP86-D4/2021
+def2-TZVPPD, <code class="docutils literal notranslate"><span class="pre">--charges</span> <span class="pre">&quot;1</span> <span class="pre">-1&quot;</span></code>, through the M3 ORCA
+N-fragment substep this campaign built. Structures:
+<code class="docutils literal notranslate"><span class="pre">~/Sites/training-data/2026-08-03_na-cl-scan-run1/</span></code> (<code class="docutils literal notranslate"><span class="pre">Na-Cl.sdf</span></code>).</p>
+</dd>
+<dt class="field-odd">Affects<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>cluster</strong> sub-calculation only (the one full-complex, both
+atoms real, net-neutral SCF – one of the <code class="docutils literal notranslate"><span class="pre">2N</span> <span class="pre">+</span> <span class="pre">1</span></code> jobs per point).
+Not the fragment-alone or fragment-in-cluster-basis jobs.</p>
+</dd>
+<dt class="field-even">Reported by<span class="colon">:</span></dt>
+<dd class="field-even"><p>user, from the labeled <code class="docutils literal notranslate"><span class="pre">Dimers.extxyz</span></code> – noticed nonzero
+x/y forces that should vanish by the molecule’s linear symmetry,
+plus noisy Chargemol/DDEC6 charges with no clean trend vs. R.</p>
+</dd>
+</dl>
+<section id="summary">
+<h1>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h1>
+<p>This is not noise and not a convergence-tolerance problem. A single-
+determinant (RHF/KS) description of neutral NaCl has two nearly-degenerate
+electronic solutions once R is large enough – an <strong>ionic</strong> one
+(Na<sup>+</sup>Cl<sup>-</sup>, the desired diabatic surface for this training
+set) and a <strong>covalent</strong> one (Na<sup>.</sup>Cl<sup>.</sup>, two neutral atoms).
+They cross where the Coulomb stabilization of the ionic state equals the
+cost of forming it:</p>
+<div class="math notranslate nohighlight">
+\[R_c \approx \frac{e^2}{\mathrm{IP}(\mathrm{Na}) - \mathrm{EA}(\mathrm{Cl})}
+          = \frac{14.399\ \mathrm{eV \cdot A}}{5.139 - 3.617\ \mathrm{eV}}
+          \approx 9.5\ \text{A}\]</div>
+<p>which lands right in the middle of the observed problem window. Near a
+crossing like this, the SCF’s default (neutral-atom) initial guess can
+converge – self-consistently, no convergence warnings – to either branch
+depending on details of the specific geometry; nothing chains guesses
+between R-scan points (checked: no <code class="docutils literal notranslate"><span class="pre">%moinp</span></code>/<code class="docutils literal notranslate"><span class="pre">MORead</span></code> in any
+<code class="docutils literal notranslate"><span class="pre">orca.inp</span></code>, each point is a fresh default guess), so which branch wins is
+essentially decided independently, geometry by geometry. Tighter SCF
+thresholds do not fix this: the SCF <strong>is</strong> converging, just to the wrong one
+of two locally-stable solutions.</p>
 </section>
+<section id="evidence">
+<h1>Evidence<a class="headerlink" href="#evidence" title="Link to this heading">#</a></h1>
+<p>Pulled the per-subcalc ORCA logs for job 3867 (<code class="docutils literal notranslate"><span class="pre">root/5/&lt;config&gt;/2/1/</span>
+<span class="pre">{cluster,1-alone,2-alone,1-in-cluster,2-in-cluster}/orca.out</span></code>) for the
+flagged points and several clean neighbors for comparison.</p>
+<ul>
+<li><p><strong>Isolated to the cluster job.</strong> The “cluster” SCF energy is non-monotonic
+in R = 6.5-12.2 A (re-deepens instead of relaxing toward the
+E(Na<sup>+</sup>) + E(Cl<sup>-</sup>) asymptote), then snaps back to sane
+behavior at R = 13.13 A. Over the identical R range, the <code class="docutils literal notranslate"><span class="pre">1-alone</span></code>,
+<code class="docutils literal notranslate"><span class="pre">2-alone</span></code>, <code class="docutils literal notranslate"><span class="pre">1-in-cluster</span></code>, and <code class="docutils literal notranslate"><span class="pre">2-in-cluster</span></code> energies are all smooth
+to ~1e-6 Hartree – unsurprising, since each of those is a single,
+unambiguous charge state (+1, -1, or a real fragment plus inert ghost
+functions with no competing electron count), so there is no second
+solution for them to fall into.</p></li>
+<li><p><strong>A virtual orbital is dropping toward becoming an electron-transfer
+acceptor state.</strong> In the cluster job, the LUMO(+1) pair’s orbital energy
+drops steadily from +0.0147 Ha at R = 6.52 A through negative values by
+R = 13.13 A – the textbook signature of approaching this kind of crossing.</p></li>
+<li><p><strong>Genuine SCF symmetry breaking.</strong> The molecule is linear
+(D:math:<cite>_{infty h}</cite>), so degenerate pi-orbital pairs must be exactly
+degenerate. At R = 12.25 A (config <code class="docutils literal notranslate"><span class="pre">1,33</span></code>) the normally-exact pair splits
+slightly (-5.4467 vs. -5.4436 eV) – the same phenomenon that shows up
+downstream as nonzero x/y forces.</p></li>
+<li><p><strong>Total-force check pinpoints the exact broken points.</strong> Sum of forces
+over the two atoms must be exactly zero (translational invariance, no
+external field); this is a stronger, purely computational diagnostic than
+“x/y should vanish by symmetry” and needs no chemistry knowledge to apply.
+Background level (healthy points) is ~1e-4 to 1e-3; three points are
+50-500x above that:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>config</p></th>
+<th class="head"><p>R (A)</p></th>
+<th class="head"><p>|sum F|</p></th>
+<th class="head"><p>in the crossing window?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">1,17</span></code></p></td>
+<td><p>3.99</p></td>
+<td><p>0.049</p></td>
+<td><p>no – likely an unrelated, isolated glitch</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">1,25</span></code></p></td>
+<td><p>6.99</p></td>
+<td><p>0.066</p></td>
+<td><p>yes (edge)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">1,27</span></code></p></td>
+<td><p>8.04</p></td>
+<td><p>0.054</p></td>
+<td><p>yes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The energy is smooth through all three points – only the gradient (and,
+for 1,25/1,27, the Chargemol charge, and the interaction energy itself in
+<code class="docutils literal notranslate"><span class="pre">Results.csv</span></code>) is affected. The broader charge/energy drift spans
+roughly configs <code class="docutils literal notranslate"><span class="pre">1,26</span></code>-<code class="docutils literal notranslate"><span class="pre">1,33</span></code> (R = 7.5-12.25 A) even though only two of
+those points trip the force-sum threshold – i.e. the crossing can perturb
+a point’s density/charge partition measurably before it perturbs the
+gradient enough to trip a simple threshold, so a threshold-based gate
+alone will under-count affected points. <code class="docutils literal notranslate"><span class="pre">1,17</span></code> at R = 3.99 A is well
+inside the normal ionic-bonding region, nowhere near <span class="math notranslate nohighlight">\(R_c\)</span> – treat
+it as a separate, one-off SCF quirk rather than the same phenomenon until
+shown otherwise.</p>
+</li>
+</ul>
+</section>
+<section id="why-this-matters-beyond-na-cl">
+<h1>Why this matters beyond Na/Cl<a class="headerlink" href="#why-this-matters-beyond-na-cl" title="Link to this heading">#</a></h1>
+<p><span class="math notranslate nohighlight">\(R_c\)</span> depends only on IP(cation) - EA(anion), so <strong>every</strong> ionic pair
+this campaign scans will have some crossing distance, just at a different R.
+Worth precomputing <span class="math notranslate nohighlight">\(R_c\)</span> (or at least flagging “this pair’s IP-EA gap
+is small enough that <span class="math notranslate nohighlight">\(R_c\)</span> falls inside the planned scan range”) before
+each new ion-pair production run, rather than rediscovering it after the
+fact per-pair. Ion-water and ion-water-water systems (the angular/trimer test
+sets built alongside this scan, see
+<code class="docutils literal notranslate"><span class="pre">~/Sites/mlff-training/2026-08-07_ion-water-angular-and-trimers/</span></code>) don’t
+have this exact failure mode since the “cluster” fragment count/composition
+differs, but the same <em>class</em> of problem – a fragment sub-calculation with
+more than one accessible electronic state near-degenerate at some geometry –
+is worth keeping in mind generally for charged multi-fragment BSSE.</p>
+</section>
+<section id="fix-directions-not-yet-implemented">
+<h1>Fix directions (not yet implemented)<a class="headerlink" href="#fix-directions-not-yet-implemented" title="Link to this heading">#</a></h1>
+<p>Because this is “converges to the wrong stable solution,” not “fails to
+converge,” a tighter <code class="docutils literal notranslate"><span class="pre">TightSCF</span> <span class="pre">-&gt;</span> <span class="pre">VeryTightSCF</span></code> will not help. In order of
+expected leverage:</p>
+<ol class="arabic simple">
+<li><p><strong>Seed the cluster job’s guess from the fragment orbitals already being
+computed.</strong> Every BSSE point already runs <code class="docutils literal notranslate"><span class="pre">1-alone</span></code> (Na<sup>+</sup>) and
+<code class="docutils literal notranslate"><span class="pre">2-alone</span></code> (Cl<sup>-</sup>) as two of the <code class="docutils literal notranslate"><span class="pre">2N</span> <span class="pre">+</span> <span class="pre">1</span></code> required jobs – their
+orbitals are unambiguous (single charge state each) and free. Combine
+them into the cluster job’s initial guess (ORCA supports building a
+guess from fragment MOs) instead of letting it fall back to the default
+neutral-atom guess. This directly biases every point toward the ionic
+diabatic surface, which is <em>already</em> the deliberate target everywhere
+else in this pipeline (the whole point of <code class="docutils literal notranslate"><span class="pre">--charges</span></code> fixing
+per-fragment charge), including past <span class="math notranslate nohighlight">\(R_c\)</span> where the true adiabatic
+ground state would actually be covalent – that’s correct for training-
+set purposes, not a bug to route around.</p></li>
+<li><p><strong>Add SCF stability analysis</strong> (<code class="docutils literal notranslate"><span class="pre">!StabPerform</span></code> in current ORCA syntax)
+to the cluster job as a backstop, so a solution that is actually a saddle
+point gets kicked back toward a genuine minimum. Cheaper to add than (1)
+but doesn’t by itself guarantee landing on the <em>ionic</em> minimum rather
+than the covalent one past <span class="math notranslate nohighlight">\(R_c\)</span> – (1) and (2) are complementary,
+not alternatives.</p></li>
+<li><p><strong>A generic post-hoc QC gate</strong>, independent of the above: check
+<span class="math notranslate nohighlight">\(\sum \vec F \approx 0\)</span> across the full cluster automatically for
+every point of every charged/multi-fragment production run (cheap, no
+chemistry-specific knowledge needed) and flag/retry anything outside
+tolerance. This is what surfaced the problem here and generalizes to any
+future ionic system, but per the point above about 1,26/1,28-1,33 not all
+tripping the threshold, it should be a first-pass filter, not the only
+check – pair it with a smoothness check on the CP-corrected energy and/or
+the atomic charges vs. neighboring R points.</p></li>
+</ol>
+</section>
+<section id="raw-data">
+<h1>Raw data<a class="headerlink" href="#raw-data" title="Link to this heading">#</a></h1>
+<p>Dashboard: <code class="docutils literal notranslate"><span class="pre">dev</span></code> (<code class="docutils literal notranslate"><span class="pre">http://localhost:55066</span></code>), job 3867, project
+<code class="docutils literal notranslate"><span class="pre">water</span></code>. Key files: <code class="docutils literal notranslate"><span class="pre">Dimers.extxyz</span></code> (labeled structures/forces/charges),
+<code class="docutils literal notranslate"><span class="pre">Results.csv</span></code> (per-point interaction energies), and per-subcalc ORCA I/O
+under <code class="docutils literal notranslate"><span class="pre">root/5/&lt;config&gt;/2/1/{cluster,1-alone,2-alone,1-in-cluster,</span>
+<span class="pre">2-in-cluster}/orca.{inp,out}</span></code> for each <code class="docutils literal notranslate"><span class="pre">&lt;config&gt;</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">1,25</span></code>).</p>
 </section>
 
 
@@ -415,22 +561,13 @@ substep inside <code class="docutils literal notranslate"><span class="pre">orca
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../index.html"
+       href="bsse_architecture.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Campaigns</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="bsse_architecture.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">An N-fragment, charge-aware counterpoise architecture</p>
       </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -451,14 +588,19 @@ substep inside <code class="docutils literal notranslate"><span class="pre">orca
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goal">Goal</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Summary</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#evidence">Evidence</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-matters-beyond-na-cl">Why this matters beyond Na/Cl</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#fix-directions-not-yet-implemented">Fix directions (not yet implemented)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#raw-data">Raw data</a></li>
 </ul>
+
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../../../_sources/developer_guide/campaigns/2026-08-03/index.rst.txt">
+    <a href="../../../_sources/developer_guide/campaigns/2026-08-03/NOTES_nacl_cluster_scf_curve_crossing.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
