@@ -13,19 +13,33 @@ from typing import Dict, List, Optional, Sequence
 
 from .job_specs import CLUSTER, FRAGMENT_ALONE, JobSpec
 
-#: Net-force tolerance (E_h/bohr, ~1 eV/A) above which a CP-corrected
-#: gradient is treated as corrupted -- a translational-invariance guard.
-#: A converged CP-corrected gradient of an isolated cluster always sums to
-#: ~0 net force; ORCA (RIJCOSX) can silently corrupt the far-ghost Pulay
-#: force at large fragment separation while the energy stays fine (no
-#: warning, no linear dependence flagged), and this sum is the only
-#: reliable detector. Same value as the guard formerly implemented in
-#: orca_step's ``bssegradient.cmp`` Compound script -- see the workspace
-#: memory ``bsse-corrected-gradients.md`` for the root-cause investigation
-#: it was written against. Where this fires the physical BSSE correction to
-#: the forces is negligible anyway (it only triggers at large separation),
-#: so falling back to the uncorrected cluster gradient is safe.
-DEFAULT_GRADIENT_TOLERANCE = 0.02
+#: Net-force tolerance (E_h/bohr) above which a CP-corrected gradient is
+#: treated as corrupted -- a translational-invariance guard. A converged
+#: CP-corrected gradient of an isolated cluster always sums to ~0 net force;
+#: ORCA (RIJCOSX) can silently corrupt the far-ghost Pulay force on a
+#: ``fragment-in-cluster`` job while the energy stays fine (no warning, no
+#: linear dependence flagged), and this sum is the only reliable detector.
+#:
+#: Calibrated (2026-08-07) against a real 40-point Na+/Cl- R-scan (job 3867):
+#: across the 37 healthy points the combined net force never exceeds
+#: 9.6e-5 E_h/bohr; the 3 anomalous points (all traced to exactly this
+#: RIJCOSX/ghost-centre noise in a ``fragment-in-cluster`` job, confirmed by
+#: hand-recombining the raw per-job gradients -- NOT a wrong SCF branch,
+#: which was ruled out by checking Mulliken charges/orbital degeneracy on
+#: the same points) sit at 9.5e-4 to 1.3e-3 -- a clean >10x gap. This value
+#: is the geometric mean of that gap. The prior value (0.02) was ~200x too
+#: loose to catch this class of point at all. See the workspace memory
+#: ``nacl-curve-crossing-investigation.md`` for the full investigation
+#: (including why a real, distinct, and much smaller symmetry-breaking
+#: effect near the ionic/covalent curve crossing does NOT trip this guard --
+#: correctly, since the true BSSE correction is already negligible wherever
+#: that effect shows up).
+#:
+#: Where this fires, the physical BSSE correction to the forces is
+#: negligible anyway (see ``gradient_correction_magnitude`` on the returned
+#: :class:`CPResult` to check this directly for a given point), so falling
+#: back to the uncorrected cluster gradient is safe.
+DEFAULT_GRADIENT_TOLERANCE = 3e-4
 
 
 @dataclass(frozen=True)
@@ -59,7 +73,20 @@ class CPResult:
     fired and ``gradient`` was replaced by the uncorrected cluster gradient
     (``energy`` is unaffected either way). ``net_force`` is the magnitude
     (E_h/bohr) of the net force summed over the combined gradient before any
-    fallback -- ``None`` when there is no gradient.
+    fallback -- ``None`` when there is no gradient. ``net_force`` measures
+    how *inconsistent* (noisy) the correction is, which is a different
+    question from how *large* it is -- ``gradient_correction_magnitude`` is
+    the size (E_h/bohr, a full-cluster Frobenius norm) of the BSSE gradient
+    correction actually applied (``gradient - <raw cluster gradient>``),
+    always computed when a gradient is available (whether or not the
+    fallback fires). A caller wondering whether the uncorrected-gradient
+    fallback is trustworthy for a given point -- rather than just trusting
+    the "large separation" assumption baked into the guard's tolerance --
+    can check this directly: a small value means there was little physical
+    correction to lose either way; a large value together with
+    ``gradient_fallback`` means the fallback is discarding something that
+    actually mattered, and the point is worth excluding/rerunning rather
+    than silently accepted.
     """
 
     energy: float
@@ -69,6 +96,7 @@ class CPResult:
     uncorrected_interaction_energy: float
     gradient_fallback: bool = False
     net_force: Optional[float] = None
+    gradient_correction_magnitude: Optional[float] = None
 
 
 def _pad(values, atom_indices, n_atoms):
@@ -124,13 +152,12 @@ def combine(
     e_in_cluster_sum = 0.0
     e_alone_sum = 0.0
     cluster_gradient = None
+    correction = None
     if have_gradients:
         cluster_gradient = _pad(
             cluster_result.gradient, cluster_spec.atom_indices, n_atoms
         )
-        gradient = cluster_gradient
-    else:
-        gradient = None
+        correction = [[0.0, 0.0, 0.0] for _ in range(n_atoms)]
 
     for fragment_label in fragment_labels:
         in_cluster_spec = by_label[f"{fragment_label}-in-cluster"]
@@ -146,10 +173,22 @@ def combine(
                 in_cluster_result.gradient, in_cluster_spec.atom_indices, n_atoms
             )
             g_alone = _pad(alone_result.gradient, alone_spec.atom_indices, n_atoms)
-            gradient = [
-                [gc - (gi - ga) for gc, gi, ga in zip(row_c, row_i, row_a)]
-                for row_c, row_i, row_a in zip(gradient, g_in_cluster, g_alone)
+            correction = [
+                [rc + (ga - gi) for rc, gi, ga in zip(row_corr, row_i, row_a)]
+                for row_corr, row_i, row_a in zip(correction, g_in_cluster, g_alone)
             ]
+
+    gradient_correction_magnitude = None
+    if have_gradients:
+        gradient = [
+            [gc + corr for gc, corr in zip(row_c, row_corr)]
+            for row_c, row_corr in zip(cluster_gradient, correction)
+        ]
+        gradient_correction_magnitude = (
+            sum(c * c for row in correction for c in row) ** 0.5
+        )
+    else:
+        gradient = None
 
     e_cluster = cluster_result.energy
     delta = e_in_cluster_sum - e_alone_sum  # sum of per-fragment BSSE gaps
@@ -182,4 +221,5 @@ def combine(
         uncorrected_interaction_energy=e_cluster - e_alone_sum,
         gradient_fallback=gradient_fallback,
         net_force=net_force,
+        gradient_correction_magnitude=gradient_correction_magnitude,
     )
