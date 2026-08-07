@@ -194,12 +194,12 @@ def test_gradient_tolerance_is_overridable():
     def row(x):
         return [x, 0.0, 0.0]
 
-    # A small, deliberate net-force residual that is within the default
-    # tolerance but not a stricter, caller-supplied one.
+    # A small, deliberate net-force residual (1e-4 E_h/bohr) that is within
+    # the default tolerance (3e-4) but not a stricter, caller-supplied one.
     results = {
         "cluster": JobResult(energy=-10.0, gradient=[row(1.0), row(-1.0)]),
         "A-in-cluster": JobResult(energy=-4.5, gradient=[row(1.0), row(0.0)]),
-        "B-in-cluster": JobResult(energy=-5.3, gradient=[row(0.0), row(-0.99)]),
+        "B-in-cluster": JobResult(energy=-5.3, gradient=[row(0.0), row(-0.9999)]),
         "A-alone": JobResult(energy=-4.4, gradient=[row(1.0)]),
         "B-alone": JobResult(energy=-5.2, gradient=[row(-1.0)]),
     }
@@ -211,6 +211,66 @@ def test_gradient_tolerance_is_overridable():
     assert strict.gradient_fallback is True
     assert strict.gradient[0][0] == pytest.approx(1.0)
     assert strict.gradient[1][0] == pytest.approx(-1.0)
+
+
+def test_gradient_correction_magnitude_reflects_real_correction_size():
+    # A case with NO noise (in_cluster == alone for both fragments, as in the
+    # clean no-fallback test above) but a genuine, sizeable BSSE correction:
+    # the correction magnitude must reflect that size directly, independent
+    # of net_force (which stays ~0 here since the correction is clean/
+    # translationally invariant, not noisy).
+    fragments = [
+        Fragment(label="A", atom_indices=[0]),
+        Fragment(label="B", atom_indices=[1]),
+    ]
+    specs = generate_job_specs(fragments)
+
+    def row(x):
+        return [x, 0.0, 0.0]
+
+    results = {
+        "cluster": JobResult(energy=-10.0, gradient=[row(1.0), row(-1.0)]),
+        "A-in-cluster": JobResult(energy=-4.5, gradient=[row(1.2), row(0.0)]),
+        "B-in-cluster": JobResult(energy=-5.3, gradient=[row(0.0), row(-1.2)]),
+        "A-alone": JobResult(energy=-4.4, gradient=[row(1.0)]),
+        "B-alone": JobResult(energy=-5.2, gradient=[row(-1.0)]),
+    }
+
+    result = combine(specs, results, n_atoms=2)
+
+    assert result.gradient_fallback is False
+    assert result.net_force == pytest.approx(0.0)
+    # correction per atom = alone - in_cluster = 1.0 - 1.2 = -0.2 (and mirror);
+    # magnitude over both atoms = sqrt(0.2**2 + 0.2**2).
+    assert result.gradient_correction_magnitude == pytest.approx(0.2 * 2**0.5)
+
+
+def test_gradient_correction_magnitude_present_even_when_fallback_fires():
+    # The whole point of exposing this alongside gradient_fallback: a caller
+    # can tell whether a triggered fallback discarded something that
+    # mattered, not just that it triggered.
+    fragments = [
+        Fragment(label="A", atom_indices=[0]),
+        Fragment(label="B", atom_indices=[1]),
+    ]
+    specs = generate_job_specs(fragments)
+
+    def row(x):
+        return [x, 0.0, 0.0]
+
+    results = {
+        "cluster": JobResult(energy=-10.0, gradient=[row(0.09), row(-0.09)]),
+        "A-in-cluster": JobResult(energy=-4.5, gradient=[row(0.1), row(300.0)]),
+        "B-in-cluster": JobResult(energy=-5.3, gradient=[row(0.0), row(-0.1)]),
+        "A-alone": JobResult(energy=-4.4, gradient=[row(0.1)]),
+        "B-alone": JobResult(energy=-5.2, gradient=[row(-0.1)]),
+    }
+
+    result = combine(specs, results, n_atoms=2)
+
+    assert result.gradient_fallback is True
+    assert result.gradient_correction_magnitude is not None
+    assert result.gradient_correction_magnitude > 0
 
 
 def test_missing_result_raises_keyerror():

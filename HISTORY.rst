@@ -2,6 +2,30 @@
 History
 =======
 
+2026.8.7.1 -- Bugfix: recalibrate the CP-corrected gradient's noise guard
+    * ``DEFAULT_GRADIENT_TOLERANCE`` (the translational-invariance guard that
+      falls back to the uncorrected cluster gradient when the CP-corrected
+      one looks corrupted) was ``0.02`` E_h/bohr -- calibrated against a real
+      40-point Na+/Cl- R-scan, this is ~200x looser than the real noise floor
+      (all 37 healthy points stay under 9.6e-5; the 3 anomalous ones sit at
+      9.5e-4 to 1.3e-3, a clean >10x gap), so it was silently letting a real
+      class of ghost-centre integration noise through as training-set
+      gradient labels. Recalibrated to ``3e-4`` (the geometric mean of that
+      gap). Investigating this also found that what looked like an SCF
+      curve-crossing bug (per
+      ``docs/developer_guide/campaigns/2026-08-03/
+      NOTES_nacl_cluster_scf_curve_crossing.rst``) was, for the two points
+      with concrete evidence, actually this same noise passing the old
+      tolerance -- not a wrong SCF branch.
+    * ``combine()``'s ``CPResult`` gains ``gradient_correction_magnitude``: the
+      size (E_h/bohr) of the BSSE gradient correction actually being applied,
+      always computed when gradients are available. This answers "how much
+      physics would the fallback discard" directly for a given point, rather
+      than only trusting the tolerance's built-in "large separation ->
+      negligible correction" assumption -- a small value alongside
+      ``gradient_fallback`` means the fallback is safe; a large one means the
+      point is worth excluding/rerunning instead.
+
 2026.8.7 -- Bugfix: catch a per-fragment charge that leaves it open-shell
     * ``validate_fragments`` now takes an optional ``atomic_numbers`` argument and,
       when given, checks that every fragment has an even electron count at its

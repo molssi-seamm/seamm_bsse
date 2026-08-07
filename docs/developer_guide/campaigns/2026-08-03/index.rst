@@ -16,3 +16,4 @@ Contents:
    :maxdepth: 2
 
    bsse_architecture
+   NOTES_nacl_cluster_scf_curve_crossing
