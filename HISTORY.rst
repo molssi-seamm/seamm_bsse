@@ -2,6 +2,17 @@
 History
 =======
 
+2026.8.7 -- Bugfix: catch a per-fragment charge that leaves it open-shell
+    * ``validate_fragments`` now takes an optional ``atomic_numbers`` argument and,
+      when given, checks that every fragment has an even electron count at its
+      assigned charge. A per-fragment charge given to the wrong fragment (e.g. an
+      ion's charge assigned to its neutral partner instead of the ion) can still
+      sum correctly to the cluster's own charge, so the existing cluster-charge
+      check missed it; the mistake only surfaced later as a cryptic error deep in
+      one fragment's quantum chemistry sub-job, since a closed-shell (singlet)
+      fragment cannot have an odd number of electrons. This is now caught up
+      front with a clear message naming the offending fragment.
+
 2026.8.6 -- Bugfix: guard against a corrupted counterpoise gradient at large separation
     * ``combine()`` now checks that the assembled counterpoise-corrected gradient
       sums to ~zero net force, as it must by translational invariance. Some
